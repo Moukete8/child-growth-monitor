@@ -46,6 +46,14 @@ dependencies:
   google_fonts: ^8.1.0
   material_symbols_icons: ^4.2951.0
   flutter_dotenv: ^6.0.1
+  image_picker: ^1.1.2
+  shared_preferences: ^2.5.5
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  csv: ^6.0.0
+  share_plus: ^11.0.0
+  mobile_scanner: ^6.0.10
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +67,6 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   drift_dev: ^2.34.0
   build_runner: ^2.15.0
-  shared_preferences: ^2.5.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -74,6 +81,7 @@ flutter:
 
   assets:
     - assets/who_tables/
+    - assets/translations/
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

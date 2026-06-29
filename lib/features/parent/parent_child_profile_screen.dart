@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/age_format.dart';
+import '../../core/utils/image_picker_sheet.dart';
 import '../../core/utils/risk_mapping.dart';
 import '../../data/local/app_database.dart';
 import '../../data/repositories/child_repository.dart';
 import '../../data/repositories/measurement_repository.dart';
 import '../../design_system/atoms/app_button.dart';
 import '../../design_system/atoms/risk_badge.dart';
+import '../../design_system/molecules/avatar.dart';
 import '../../design_system/organisms/gradient_header.dart';
 import '../../design_system/templates/role_scaffold.dart';
 import '../../design_system/tokens/app_colors.dart';
@@ -39,6 +42,20 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
   static const _months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   String _formatDate(DateTime d) => '${d.day} ${_months[d.month - 1]} ${d.year}';
 
+  Future<void> _changeAvatar() async {
+    final picked = await pickAvatarSource(context);
+    if (picked == null) return;
+    final bytes = await picked.readAsBytes();
+    try {
+      await _childRepository.updateChildAvatarAsParent(widget.childId, bytes, contentType: 'image/jpeg');
+      if (!mounted) return;
+      setState(() => _future = _load());
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(tr('parent.child_profile.could_not_update_photo', args: ['$e']))));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -63,9 +80,9 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                       Row(
                         children: [
                           HeaderIconButton(icon: Icons.arrow_back, onPressed: () => Navigator.of(context).pop()),
-                          const Expanded(
+                          Expanded(
                             child: Center(
-                              child: Text('Child Profile', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                              child: Text(tr('parent.child_profile.title'), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                             ),
                           ),
                           HeaderIconButton(icon: Icons.ios_share, onPressed: () {}),
@@ -74,10 +91,28 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          const CircleAvatar(
-                            radius: 32,
-                            backgroundColor: Color(0x33FFFFFF),
-                            child: Icon(Icons.child_care, color: Colors.white, size: 30),
+                          GestureDetector(
+                            onTap: child == null ? null : _changeAvatar,
+                            child: Stack(
+                              children: [
+                                AppAvatar(
+                                  imageUrl: child?.avatarUrl,
+                                  fallbackIcon: Icons.child_care,
+                                  radius: 32,
+                                  backgroundColor: const Color(0x33FFFFFF),
+                                ),
+                                if (child != null)
+                                  Positioned(
+                                    right: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      decoration: const BoxDecoration(color: AppColors.parentPrimary, shape: BoxShape.circle),
+                                      child: const Icon(Icons.camera_alt, size: 12, color: Colors.white),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                           const SizedBox(width: 14),
                           Expanded(
@@ -90,13 +125,22 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                                 Text(
                                   child == null
                                       ? ''
-                                      : '${formatAge(child.dateOfBirth)} · ${child.sex == 'male' ? 'Male' : 'Female'} · Born ${_formatDate(child.dateOfBirth)}',
+                                      : tr('parent.child_profile.subtitle', args: [
+                                          formatAge(child.dateOfBirth),
+                                          child.sex == 'male' ? tr('shared.sex.male') : tr('shared.sex.female'),
+                                          _formatDate(child.dateOfBirth),
+                                        ]),
                                   style: const TextStyle(fontSize: 13, color: Color(0xD9FFFFFF)),
                                 ),
                               ],
                             ),
                           ),
-                          RiskBadge(level: level, label: level == RiskLevel.normal ? 'Healthy' : (level == RiskLevel.moderate ? 'Watch' : 'At Risk')),
+                          RiskBadge(
+                            level: level,
+                            label: level == RiskLevel.normal
+                                ? tr('parent.child_profile.healthy')
+                                : (level == RiskLevel.moderate ? tr('parent.child_profile.watch') : tr('parent.child_profile.at_risk')),
+                          ),
                         ],
                       ),
                     ],
@@ -105,22 +149,22 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
           body: !snapshot.hasData
               ? const Center(child: CircularProgressIndicator())
               : child == null
-                  ? const Center(child: Text('Child not found.'))
+                  ? Center(child: Text(tr('parent.child_profile.not_found')))
                   : ListView(
                       padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
                       children: [
                                 Row(
                                   children: [
-                                    _MetricBox(label: 'BMI', value: latest == null ? '—' : (latest.bmi ?? 0).toStringAsFixed(1), color: AppColors.textPrimary),
+                                    _MetricBox(label: tr('parent.child_profile.bmi'), value: latest == null ? '—' : (latest.bmi ?? 0).toStringAsFixed(1), color: AppColors.textPrimary),
                                     const SizedBox(width: 10),
                                     _MetricBox(
-                                      label: 'Weight-Age Z',
+                                      label: tr('parent.child_profile.weight_age_z'),
                                       value: latest == null ? '—' : (latest.waz ?? 0).toStringAsFixed(1),
                                       color: level.dotColor,
                                     ),
                                     const SizedBox(width: 10),
                                     _MetricBox(
-                                      label: 'Birth wt',
+                                      label: tr('parent.child_profile.birth_weight'),
                                       value: child.birthWeightKg == null ? '—' : '${child.birthWeightKg!.toStringAsFixed(1)}kg',
                                       color: AppColors.textPrimary,
                                     ),
@@ -131,7 +175,7 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                                   children: [
                                     Expanded(
                                       child: AppButton(
-                                        label: 'View Charts',
+                                        label: tr('parent.child_profile.view_charts'),
                                         icon: Icons.monitor_heart_outlined,
                                         onPressed: () => Navigator.of(context).pushNamed('/parent/charts'),
                                       ),
@@ -139,7 +183,7 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                                     const SizedBox(width: 11),
                                     Expanded(
                                       child: AppButton(
-                                        label: 'Tips',
+                                        label: tr('parent.child_profile.tips'),
                                         icon: Icons.eco_outlined,
                                         variant: AppButtonVariant.secondary,
                                         onPressed: () => Navigator.of(context).pushNamed('/parent/tips'),
@@ -148,14 +192,14 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                                   ],
                                 ),
                                 const SizedBox(height: 16),
-                                const Text('MEASUREMENT TIMELINE',
-                                    style: TextStyle(
+                                Text(tr('parent.child_profile.measurement_timeline'),
+                                    style: const TextStyle(
                                         fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                                 const SizedBox(height: 11),
                                 if (history.isEmpty)
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 16),
-                                    child: Text('No measurements yet.', style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                    child: Text(tr('parent.child_profile.no_measurements'), style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
                                   )
                                 else
                                   Container(
@@ -261,8 +305,12 @@ class _TimelineRow extends StatelessWidget {
               ],
             ),
           ),
-          Text(level == RiskLevel.normal ? 'Healthy' : (level == RiskLevel.moderate ? 'Watch' : 'At Risk'),
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: level.dotColor)),
+          Text(
+            level == RiskLevel.normal
+                ? tr('parent.child_profile.healthy')
+                : (level == RiskLevel.moderate ? tr('parent.child_profile.watch') : tr('parent.child_profile.at_risk')),
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: level.dotColor),
+          ),
         ],
       ),
     );

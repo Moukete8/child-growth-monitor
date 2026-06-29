@@ -1,0 +1,297 @@
+{
+  "language": "Langue",
+  "sync": {
+    "now": "Synchroniser",
+    "syncing": "Synchronisation avec Supabase…",
+    "never": "Pas encore synchronisé",
+    "just_now": "Synchronisé à l'instant",
+    "minutes_ago": "Synchronisé il y a {} min",
+    "result": "Synchronisé — {} envoyé(s)"
+  },
+  "tips": {
+    "empty": "Pas encore de mesure — les recommandations apparaîtront après le premier contrôle."
+  },
+  "notifications": {
+    "empty": "Aucune alerte pour l'instant — les mises à jour apparaîtront ici dès qu'une mesure sera enregistrée."
+  },
+  "shared": {
+    "sex": {
+      "male": "Garçon",
+      "female": "Fille"
+    },
+    "log_out": "Se déconnecter",
+    "could_not_update_photo": "Impossible de mettre à jour la photo : {}"
+  },
+  "parent": {
+    "dashboard": {
+      "role_label": "Parent",
+      "greeting": "Bonjour, {}",
+      "your_children": "VOS ENFANTS",
+      "no_children": "Aucun enfant lié pour l'instant — utilisez le bouton ci-dessous.",
+      "no_data_yet": "Pas encore de données",
+      "no_data_badge": "Aucune donnée",
+      "healthy": "En bonne santé",
+      "at_risk": "À risque",
+      "link_another_child": "Lier un autre enfant",
+      "quick_actions": "ACTIONS RAPIDES",
+      "growth_charts": "Courbes de croissance",
+      "recommendations": "Recommandations"
+    },
+    "charts": {
+      "title": "Courbes de croissance",
+      "no_children": "Aucun enfant lié pour l'instant — liez-en un pour voir sa courbe de croissance.",
+      "link_a_child": "Lier un enfant",
+      "no_measurements": "Pas encore de mesure pour {}.",
+      "weight_for_age": "Poids-pour-âge",
+      "z_score_unit": "Z-score · norme OMS",
+      "weight_height": "Poids-Taille",
+      "height_age": "Taille-Âge",
+      "weight_age": "Poids-Âge",
+      "latest": "Dernière",
+      "first_measurement": "Première mesure",
+      "since_month": "{}{} depuis {}",
+      "who_percentile": "Percentile OMS",
+      "within_normal_range": "Dans la norme",
+      "needs_attention": "Nécessite une attention",
+      "info_normal": "{} progresse régulièrement sur sa courbe. Pincez pour zoomer ; touchez un point pour voir le détail de cette mesure.",
+      "info_risk": "La dernière mesure de {} montre un risque {}. Ouvrez son profil pour connaître les prochaines étapes recommandées.",
+      "moderate": "modéré",
+      "severe": "sévère"
+    },
+    "tips_screen": {
+      "title": "Conseils & astuces",
+      "subtitle_no_child": "Liez un enfant pour voir les conseils nutritionnels",
+      "subtitle_child": "Conseils nutritionnels pour {}",
+      "footer": "Les conseils se mettent à jour automatiquement à chaque nouvelle mesure."
+    },
+    "notifications_screen": {
+      "title": "Notifications",
+      "total": "{} au total",
+      "alert_for": "Alerte pour {}"
+    },
+    "link_child": {
+      "title": "Lier un enfant",
+      "intro": "Connectez-vous à une fiche enfant créée par un infirmier(e). Entrez le code qui vous a été donné à la clinique.",
+      "scan_qr": "Scannez le code QR donné à la clinique",
+      "scan_title": "Scanner le code QR",
+      "scan_hint": "Pointez la caméra vers le code QR montré par l'infirmier(e)",
+      "scan_coming_soon": "Scan QR bientôt disponible — utilisez le code ci-dessous",
+      "or_enter_code": "ou entrez le code",
+      "code_placeholder": "ex. CMR4X9",
+      "submit": "Lier l'enfant",
+      "linking": "Liaison…",
+      "error_empty": "Entrez le code donné par l'infirmier(e).",
+      "error_link": "Impossible de lier cet enfant : {}"
+    },
+    "child_profile": {
+      "title": "Profil de l'enfant",
+      "not_found": "Enfant introuvable.",
+      "subtitle": "{} · {} · Né(e) le {}",
+      "bmi": "IMC",
+      "view_charts": "Voir les courbes",
+      "tips": "Conseils",
+      "measurement_timeline": "HISTORIQUE DES MESURES",
+      "no_measurements": "Pas encore de mesure.",
+      "birth_weight": "Poids naiss.",
+      "weight_age_z": "Poids-Âge Z",
+      "healthy": "En bonne santé",
+      "watch": "À surveiller",
+      "at_risk": "À risque",
+      "could_not_update_photo": "Impossible de mettre à jour la photo : {}"
+    },
+    "profile": {
+      "phone": "Téléphone",
+      "email": "Email",
+      "preferences": "PRÉFÉRENCES",
+      "offline_data": "Données hors ligne",
+      "children_linked": "Parent · {} enfants liés",
+      "child_linked": "Parent · 1 enfant lié"
+    }
+  },
+  "nurse": {
+    "dashboard": {
+      "role_label": "Infirmier(e)",
+      "greeting": "Bienvenue, {}",
+      "monitored": "Suivis",
+      "at_risk": "À risque",
+      "critical": "Critique",
+      "quick_actions": "ACTIONS RAPIDES",
+      "search_child": "Rechercher un enfant",
+      "register_child": "Inscrire un enfant",
+      "record_measure": "Enregistrer une mesure",
+      "view_alerts": "Voir les alertes",
+      "recent_activity": "ACTIVITÉ RÉCENTE",
+      "no_activity": "Aucune activité pour l'instant — inscrivez un enfant pour commencer.",
+      "new_measurement": "Nouvelle mesure",
+      "registered_awaiting": "Inscrit & en attente de la première mesure"
+    },
+    "search": {
+      "title": "Enfants",
+      "hint": "Nom ou code de liaison",
+      "count": "{} enfants",
+      "empty": "Aucun enfant pour l'instant — inscrivez-en un ci-dessous.",
+      "register_new": "Inscrire un nouvel enfant",
+      "code_age": "Code · {} · {}"
+    },
+    "register": {
+      "title": "Inscrire un enfant",
+      "photo_optional": "Photo (optionnelle)",
+      "name_label": "Nom complet de l'enfant",
+      "name_placeholder": "ex. Bébé Kofi",
+      "dob_label": "Date de naissance",
+      "birth_weight_label": "Poids de naissance",
+      "sex_label": "Sexe",
+      "male": "Garçon",
+      "female": "Fille",
+      "contact_label": "Téléphone ou email du parent (pour référence)",
+      "info": "Un identifiant et un code de liaison uniques sont générés à la soumission, pour que le parent puisse se lier même sans connexion.",
+      "submit": "Inscrire l'enfant",
+      "submitting": "Inscription…",
+      "error_validation": "Entrez le nom de l'enfant et une date de naissance valide (JJ/MM/AAAA).",
+      "error_submit": "Impossible d'inscrire l'enfant : {}",
+      "dialog_title": "Enfant inscrit",
+      "dialog_body": "{} a été inscrit(e) avec succès.",
+      "dialog_share": "Partagez ce code avec le parent pour lier l'application :"
+    },
+    "measure": {
+      "title": "Saisie de mesure",
+      "weight": "Poids (kg)",
+      "height": "Taille (cm)",
+      "muac": "PB (cm)",
+      "head_circumference": "Périm. crânien (cm)",
+      "info": "Les Z-scores sont calculés sur l'appareil avec le moteur LMS de l'OMS et les tables officielles des normes de croissance de l'OMS — aucune connexion requise.",
+      "submit": "Soumettre & analyser",
+      "computing": "Calcul…",
+      "error_validation": "Entrez un poids et une taille valides.",
+      "error_submit": "Impossible d'enregistrer cette mesure : {}"
+    },
+    "analysis": {
+      "title": "Analyse de croissance",
+      "not_found": "Enfant introuvable.",
+      "no_measurements": "Aucune mesure enregistrée pour l'instant.",
+      "bmi": "IMC",
+      "who_classification": "Classification OMS",
+      "weight_height": "Poids-Taille",
+      "height_age": "Taille-Âge",
+      "weight_age": "Poids-Âge",
+      "weight_for_age": "Poids-pour-âge",
+      "z_score_unit": "Z-score · norme OMS",
+      "severe_malnutrition": "Malnutrition sévère",
+      "moderate_malnutrition": "Malnutrition modérée",
+      "normal_growth": "Croissance normale",
+      "recommended_action": "Action recommandée",
+      "severe_action_1": "Référer à un nutritionniste hospitalier dans les 48 heures.",
+      "severe_action_2": "Débuter une alimentation thérapeutique à haute énergie (ATPE).",
+      "moderate_action_1": "Programmer une mesure de suivi dans les 2 semaines.",
+      "moderate_action_2": "Conseiller le parent sur les pratiques alimentaires.",
+      "generate_report": "Générer un rapport"
+    },
+    "child_profile": {
+      "title": "Profil de l'enfant",
+      "not_found": "Enfant introuvable.",
+      "subtitle": "{} · {} · Code : {}",
+      "severe": "Sévère",
+      "moderate": "Modéré",
+      "healthy": "En bonne santé",
+      "bmi": "IMC",
+      "whz": "PTZ",
+      "waz": "PAZ",
+      "measurement_history": "HISTORIQUE DES MESURES",
+      "no_measurements": "Pas encore de mesure.",
+      "measure": "Mesurer",
+      "charts": "Courbes",
+      "col_date": "DATE",
+      "col_wt": "POIDS",
+      "col_ht": "TAILLE",
+      "col_muac": "PB",
+      "col_status": "ÉTAT"
+    },
+    "alerts": {
+      "title": "Alertes",
+      "active_count": "{} active(s)",
+      "empty": "Aucune alerte — tous les enfants mesurés sont dans la norme.",
+      "footer_hint": "Touchez une alerte pour ouvrir l'enfant · cochez pour résoudre"
+    },
+    "reports": {
+      "title": "Rapports",
+      "subtitle": "Générer et exporter les dossiers de croissance",
+      "empty": "Aucun enfant inscrit pour l'instant — les rapports apparaîtront dès que vous en aurez au moins un.",
+      "history_title": "{} — Historique de croissance",
+      "measurement_count": "{} mesures",
+      "measurement_count_one": "{} mesure"
+    },
+    "settings": {
+      "staff_id": "Matricule · {}",
+      "sync_status": "État de synchronisation",
+      "preferences": "PRÉFÉRENCES",
+      "audit_trail": "Journal d'audit",
+      "audit_trail_subtitle": "Chaque dossier est signé"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Content de vous revoir",
+      "subtitle": "Connectez-vous pour continuer le suivi",
+      "parent_tab": "Parent",
+      "nurse_tab": "Infirmier(e)",
+      "email": "Email",
+      "password": "Mot de passe",
+      "forgot_password": "Mot de passe oublié ?",
+      "log_in": "Se connecter",
+      "signing_in": "Connexion…",
+      "or": "ou",
+      "create_account": "Créer un compte",
+      "continue_google": "Continuer avec Google",
+      "connecting": "Connexion…",
+      "footer": "Sécurisé par Supabase · Fonctionne hors ligne",
+      "error_empty": "Entrez votre email et votre mot de passe."
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "subtitle": "Rejoignez-nous pour commencer le suivi",
+      "full_name": "Nom complet",
+      "email": "Email",
+      "phone_optional": "Téléphone (optionnel)",
+      "hospital_id": "Matricule hospitalier",
+      "password": "Mot de passe",
+      "password_placeholder": "Au moins 6 caractères",
+      "confirm_password": "Confirmer le mot de passe",
+      "confirm_password_placeholder": "Retapez votre mot de passe",
+      "create_account": "Créer le compte",
+      "creating_account": "Création du compte…",
+      "continue_google": "Continuer avec Google",
+      "connecting": "Connexion…",
+      "error_validation": "Renseignez votre nom, email et mot de passe.",
+      "error_password_length": "Le mot de passe doit comporter au moins 6 caractères.",
+      "error_password_match": "Les mots de passe ne correspondent pas.",
+      "confirm_email_title": "Confirmez votre email"
+    },
+    "complete_profile": {
+      "title": "Finalisez votre compte",
+      "intro": "Vous êtes connecté(e) avec Google — dites-nous qui vous êtes pour vous diriger vers le bon tableau de bord.",
+      "full_name": "Nom complet",
+      "hospital_id": "Matricule hospitalier",
+      "continue": "Continuer",
+      "saving": "Enregistrement…",
+      "error_name": "Entrez votre nom complet.",
+      "error_hospital_id": "Entrez votre matricule hospitalier."
+    },
+    "forgot_password": {
+      "title": "Réinitialiser votre mot de passe",
+      "subtitle": "Nous vous envoyons un lien pour en définir un nouveau",
+      "email": "Email",
+      "send": "Envoyer le lien",
+      "sending": "Envoi…",
+      "google_hint": "Inscrit avec Google ? Vous n'avez pas de mot de passe à réinitialiser — utilisez plutôt « Continuer avec Google » sur l'écran de connexion.",
+      "error_empty": "Entrez votre adresse email.",
+      "confirmation_title": "Vérifiez votre email",
+      "confirmation_body": "Si un compte existe pour {}, un lien de réinitialisation est en route.",
+      "back_to_login": "Retour à la connexion"
+    },
+    "splash": {
+      "title": "Suivi de croissance\nde l'enfant",
+      "subtitle": "Suivi nutritionnel selon les normes OMS",
+      "loading": "Chargement…"
+    }
+  }
+}

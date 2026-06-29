@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart' show OrderingTerm;
+import 'package:drift/drift.dart' show OrderingTerm, Value;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import '../../who_growth/engine_provider.dart';
@@ -6,6 +6,7 @@ import '../../who_growth/z_score_engine.dart';
 import '../local/app_database.dart';
 import '../local/database_provider.dart';
 import '../remote/supabase_client.dart';
+import '../sync/pending_flusher.dart';
 import 'alert_repository.dart';
 
 /// Result of a measurement submission: the saved row plus the classification
@@ -146,6 +147,31 @@ class MeasurementRepository {
           ..orderBy([(m) => OrderingTerm.desc(m.takenAt)]))
         .get();
   }
+
+  /// Pushes locally `pending` measurements (recorded while offline) to
+  /// Supabase. Called by SyncService.
+  Future<SyncResult> pushPendingMeasurements() => flushPending<MeasurementRow>(
+        selectPending: () =>
+            (_db.select(_db.measurements)..where((m) => m.syncStatus.equals(SyncStatus.pending))).get(),
+        toSupabaseMap: (r) => {
+          'id': r.id,
+          'child_id': r.childId,
+          'nurse_id': r.nurseId,
+          'taken_at': r.takenAt.toIso8601String(),
+          'weight_kg': r.weightKg,
+          'height_cm': r.heightCm,
+          'muac_cm': r.muacCm,
+          'head_circumference_cm': r.headCircumferenceCm,
+          'bmi': r.bmi,
+          'waz': r.waz,
+          'haz': r.haz,
+          'whz': r.whz,
+        },
+        supabaseTable: 'measurements',
+        markSynced: (row) => (_db.update(_db.measurements)..where((m) => m.id.equals(row.id)))
+            .write(const MeasurementsCompanion(syncStatus: Value(SyncStatus.synced))),
+        upsert: (table, data) => _client.from(table).upsert(data),
+      );
 
   Future<void> _pullForChild(String childId) async {
     try {

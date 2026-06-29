@@ -1,0 +1,297 @@
+{
+  "language": "Language",
+  "sync": {
+    "now": "Sync now",
+    "syncing": "Syncing with Supabase…",
+    "never": "Not synced yet",
+    "just_now": "Synced just now",
+    "minutes_ago": "Synced {} min ago",
+    "result": "Synced — {} pushed"
+  },
+  "tips": {
+    "empty": "No measurements yet — recommendations will appear after the first check-up."
+  },
+  "notifications": {
+    "empty": "No alerts yet — you'll see updates here once a measurement is recorded."
+  },
+  "shared": {
+    "sex": {
+      "male": "Boy",
+      "female": "Girl"
+    },
+    "log_out": "Log out",
+    "could_not_update_photo": "Could not update photo: {}"
+  },
+  "parent": {
+    "dashboard": {
+      "role_label": "Parent",
+      "greeting": "Hello, {}",
+      "your_children": "YOUR CHILDREN",
+      "no_children": "No children linked yet — use the button below.",
+      "no_data_yet": "No data yet",
+      "no_data_badge": "No data",
+      "healthy": "Healthy",
+      "at_risk": "At Risk",
+      "link_another_child": "Link another child",
+      "quick_actions": "QUICK ACTIONS",
+      "growth_charts": "Growth charts",
+      "recommendations": "Recommendations"
+    },
+    "charts": {
+      "title": "Growth Charts",
+      "no_children": "No children linked yet — link one to see their growth chart.",
+      "link_a_child": "Link a child",
+      "no_measurements": "No measurements yet for {}.",
+      "weight_for_age": "Weight-for-Age",
+      "z_score_unit": "Z-score · WHO standard",
+      "weight_height": "Weight-Height",
+      "height_age": "Height-Age",
+      "weight_age": "Weight-Age",
+      "latest": "Latest",
+      "first_measurement": "First measurement",
+      "since_month": "{}{} since {}",
+      "who_percentile": "WHO percentile",
+      "within_normal_range": "Within normal range",
+      "needs_attention": "Needs attention",
+      "info_normal": "{} is tracking steadily along their curve. Pinch to zoom; tap any point to see that measurement's details.",
+      "info_risk": "{}'s latest measurement shows {} risk. Open their profile for recommended next steps.",
+      "moderate": "moderate",
+      "severe": "severe"
+    },
+    "tips_screen": {
+      "title": "Tips & Advice",
+      "subtitle_no_child": "Link a child to see nutrition guidance",
+      "subtitle_child": "Nutrition guidance for {}",
+      "footer": "Advice updates automatically as new measurements arrive."
+    },
+    "notifications_screen": {
+      "title": "Notifications",
+      "total": "{} total",
+      "alert_for": "Alert for {}"
+    },
+    "link_child": {
+      "title": "Link a Child",
+      "intro": "Connect to a child record created by a nurse. Enter the code given to you at the clinic.",
+      "scan_qr": "Scan the QR code given to you at the clinic",
+      "scan_title": "Scan QR code",
+      "scan_hint": "Point the camera at the QR code shown by the nurse",
+      "scan_coming_soon": "QR scanning coming soon — use the code below",
+      "or_enter_code": "or enter code",
+      "code_placeholder": "e.g. CMR4X9",
+      "submit": "Link Child",
+      "linking": "Linking…",
+      "error_empty": "Enter the code given to you by the nurse.",
+      "error_link": "Could not link this child: {}"
+    },
+    "child_profile": {
+      "title": "Child Profile",
+      "not_found": "Child not found.",
+      "subtitle": "{} · {} · Born {}",
+      "bmi": "BMI",
+      "view_charts": "View Charts",
+      "tips": "Tips",
+      "measurement_timeline": "MEASUREMENT TIMELINE",
+      "no_measurements": "No measurements yet.",
+      "birth_weight": "Birth wt",
+      "weight_age_z": "Weight-Age Z",
+      "healthy": "Healthy",
+      "watch": "Watch",
+      "at_risk": "At Risk",
+      "could_not_update_photo": "Could not update photo: {}"
+    },
+    "profile": {
+      "phone": "Phone",
+      "email": "Email",
+      "preferences": "PREFERENCES",
+      "offline_data": "Offline data",
+      "children_linked": "Parent · {} children linked",
+      "child_linked": "Parent · 1 child linked"
+    }
+  },
+  "nurse": {
+    "dashboard": {
+      "role_label": "Nurse",
+      "greeting": "Welcome, {}",
+      "monitored": "Monitored",
+      "at_risk": "At-risk",
+      "critical": "Critical",
+      "quick_actions": "QUICK ACTIONS",
+      "search_child": "Search child",
+      "register_child": "Register child",
+      "record_measure": "Record measure",
+      "view_alerts": "View alerts",
+      "recent_activity": "RECENT ACTIVITY",
+      "no_activity": "No activity yet — register a child to get started.",
+      "new_measurement": "New measurement",
+      "registered_awaiting": "Registered & awaiting first measurement"
+    },
+    "search": {
+      "title": "Children",
+      "hint": "Name or link code",
+      "count": "{} children",
+      "empty": "No children yet — register one below.",
+      "register_new": "Register new child",
+      "code_age": "Code · {} · {}"
+    },
+    "register": {
+      "title": "Register Child",
+      "photo_optional": "Photo (optional)",
+      "name_label": "Child's full name",
+      "name_placeholder": "e.g. Baby Kofi",
+      "dob_label": "Date of birth",
+      "birth_weight_label": "Birth weight",
+      "sex_label": "Sex",
+      "male": "Male",
+      "female": "Female",
+      "contact_label": "Parent phone or email (for your reference)",
+      "info": "A unique offline ID & link code are generated on submit, so the parent can link even without a connection.",
+      "submit": "Register Child",
+      "submitting": "Registering…",
+      "error_validation": "Enter the child's name and a valid date of birth (DD/MM/YYYY).",
+      "error_submit": "Could not register the child: {}",
+      "dialog_title": "Child registered",
+      "dialog_body": "{} was registered successfully.",
+      "dialog_share": "Share this code with the parent to link the app:"
+    },
+    "measure": {
+      "title": "Measurement Entry",
+      "weight": "Weight (kg)",
+      "height": "Height (cm)",
+      "muac": "MUAC (cm)",
+      "head_circumference": "Head circ. (cm)",
+      "info": "Z-scores are computed on-device with the WHO LMS engine and the official WHO Child Growth Standards tables — no connection required.",
+      "submit": "Submit & analyse",
+      "computing": "Computing…",
+      "error_validation": "Enter a valid weight and height.",
+      "error_submit": "Could not save this measurement: {}"
+    },
+    "analysis": {
+      "title": "Growth Analysis",
+      "not_found": "Child not found.",
+      "no_measurements": "No measurements recorded yet.",
+      "bmi": "BMI",
+      "who_classification": "WHO classification",
+      "weight_height": "Weight-Height",
+      "height_age": "Height-Age",
+      "weight_age": "Weight-Age",
+      "weight_for_age": "Weight-for-Age",
+      "z_score_unit": "Z-score · WHO standard",
+      "severe_malnutrition": "Severe malnutrition",
+      "moderate_malnutrition": "Moderate malnutrition",
+      "normal_growth": "Normal growth",
+      "recommended_action": "Recommended action",
+      "severe_action_1": "Refer to hospital nutritionist within 48 hours.",
+      "severe_action_2": "Begin therapeutic high-energy feeding (RUTF).",
+      "moderate_action_1": "Schedule a follow-up measurement within 2 weeks.",
+      "moderate_action_2": "Counsel caregiver on feeding practices.",
+      "generate_report": "Generate Report"
+    },
+    "child_profile": {
+      "title": "Child Profile",
+      "not_found": "Child not found.",
+      "subtitle": "{} · {} · Code: {}",
+      "severe": "Severe",
+      "moderate": "Moderate",
+      "healthy": "Healthy",
+      "bmi": "BMI",
+      "whz": "WHZ",
+      "waz": "WAZ",
+      "measurement_history": "MEASUREMENT HISTORY",
+      "no_measurements": "No measurements yet.",
+      "measure": "Measure",
+      "charts": "Charts",
+      "col_date": "DATE",
+      "col_wt": "WT",
+      "col_ht": "HT",
+      "col_muac": "MUAC",
+      "col_status": "STATUS"
+    },
+    "alerts": {
+      "title": "Alerts",
+      "active_count": "{} active",
+      "empty": "No alerts — every measured child is within normal range.",
+      "footer_hint": "Tap an alert to open the child · check to resolve"
+    },
+    "reports": {
+      "title": "Reports",
+      "subtitle": "Generate & export growth records",
+      "empty": "No children registered yet — reports appear once you have at least one.",
+      "history_title": "{} — Growth history",
+      "measurement_count": "{} measurements",
+      "measurement_count_one": "{} measurement"
+    },
+    "settings": {
+      "staff_id": "Staff ID · {}",
+      "sync_status": "Sync status",
+      "preferences": "PREFERENCES",
+      "audit_trail": "Audit trail",
+      "audit_trail_subtitle": "Every record signed"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue monitoring",
+      "parent_tab": "Parent",
+      "nurse_tab": "Nurse",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot password?",
+      "log_in": "Log in",
+      "signing_in": "Signing in…",
+      "or": "or",
+      "create_account": "Create an account",
+      "continue_google": "Continue with Google",
+      "connecting": "Connecting…",
+      "footer": "Secured by Supabase · Works offline",
+      "error_empty": "Enter your email and password."
+    },
+    "signup": {
+      "title": "Create an account",
+      "subtitle": "Join to start monitoring",
+      "full_name": "Full name",
+      "email": "Email",
+      "phone_optional": "Phone (optional)",
+      "hospital_id": "Hospital ID",
+      "password": "Password",
+      "password_placeholder": "At least 6 characters",
+      "confirm_password": "Confirm password",
+      "confirm_password_placeholder": "Re-enter your password",
+      "create_account": "Create account",
+      "creating_account": "Creating account…",
+      "continue_google": "Continue with Google",
+      "connecting": "Connecting…",
+      "error_validation": "Fill in your name, email and password.",
+      "error_password_length": "Password must be at least 6 characters.",
+      "error_password_match": "Passwords do not match.",
+      "confirm_email_title": "Confirm your email"
+    },
+    "complete_profile": {
+      "title": "Finish setting up your account",
+      "intro": "You're signed in with Google — tell us who you are so we can route you to the right dashboard.",
+      "full_name": "Full name",
+      "hospital_id": "Hospital ID",
+      "continue": "Continue",
+      "saving": "Saving…",
+      "error_name": "Enter your full name.",
+      "error_hospital_id": "Enter your hospital ID."
+    },
+    "forgot_password": {
+      "title": "Reset your password",
+      "subtitle": "We'll email you a link to set a new one",
+      "email": "Email",
+      "send": "Send reset link",
+      "sending": "Sending…",
+      "google_hint": "Signed up with Google? You don't have a password to reset — use \"Continue with Google\" on the login screen instead.",
+      "error_empty": "Enter your email address.",
+      "confirmation_title": "Check your email",
+      "confirmation_body": "If an account exists for {}, a password reset link is on its way.",
+      "back_to_login": "Back to login"
+    },
+    "splash": {
+      "title": "Child Growth\nMonitoring",
+      "subtitle": "WHO-standard nutrition tracking",
+      "loading": "Loading…"
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/age_format.dart';
 import '../../core/utils/risk_mapping.dart';
@@ -5,6 +6,7 @@ import '../../data/local/app_database.dart';
 import '../../data/repositories/child_repository.dart';
 import '../../data/repositories/measurement_repository.dart';
 import '../../design_system/atoms/risk_badge.dart';
+import '../../design_system/molecules/avatar.dart';
 import '../../design_system/organisms/gradient_header.dart';
 import '../../design_system/templates/role_scaffold.dart';
 import '../../design_system/tokens/app_colors.dart';
@@ -61,7 +63,7 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Children', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+            Text(tr('nurse.search.title'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
             const SizedBox(height: 14),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 13),
@@ -82,7 +84,7 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                         border: InputBorder.none,
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                        hintText: 'Name or link code',
+                        hintText: tr('nurse.search.hint'),
                         hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.75)),
                       ),
                     ),
@@ -114,18 +116,18 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('${results.length} children',
+                  Text(tr('nurse.search.count', args: ['${results.length}']),
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                 ],
               ),
               const SizedBox(height: 11),
               if (results.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Center(
-                    child: Text('No children yet — register one below.',
-                        style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                    child: Text(tr('nurse.search.empty'),
+                        style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
                   ),
                 ),
               for (final s in results) ...[
@@ -145,7 +147,13 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                       ),
                       child: Row(
                         children: [
-                          const CircleAvatar(radius: 23, backgroundColor: AppColors.background, child: Icon(Icons.child_care, color: AppColors.textFaint, size: 20)),
+                          AppAvatar(
+                            imageUrl: s.child.avatarUrl,
+                            fallbackIcon: Icons.child_care,
+                            radius: 23,
+                            backgroundColor: AppColors.background,
+                            iconColor: AppColors.textFaint,
+                          ),
                           const SizedBox(width: 13),
                           Expanded(
                             child: Column(
@@ -153,7 +161,7 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                               children: [
                                 Text(s.child.name, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                                 const SizedBox(height: 2),
-                                Text('Code · ${s.child.linkCode} · ${formatAge(s.child.dateOfBirth)}',
+                                Text(tr('nurse.search.code_age', args: [s.child.linkCode, formatAge(s.child.dateOfBirth)]),
                                     style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
                               ],
                             ),
@@ -176,12 +184,12 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.person_add_outlined, size: 20, color: AppColors.nursePrimary),
-                    SizedBox(width: 9),
-                    Text('Register new child', style: TextStyle(color: AppColors.nursePrimary, fontSize: 13.5, fontWeight: FontWeight.w600)),
+                    const Icon(Icons.person_add_outlined, size: 20, color: AppColors.nursePrimary),
+                    const SizedBox(width: 9),
+                    Text(tr('nurse.search.register_new'), style: const TextStyle(color: AppColors.nursePrimary, fontSize: 13.5, fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),

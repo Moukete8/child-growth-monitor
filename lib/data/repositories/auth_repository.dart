@@ -24,6 +24,7 @@ class UserProfile {
     this.email,
     this.phone,
     this.hospitalId,
+    this.avatarUrl,
   });
 
   final String id;
@@ -32,6 +33,7 @@ class UserProfile {
   final String? email;
   final String? phone;
   final String? hospitalId;
+  final String? avatarUrl;
 
   bool get isNurse => role == 'nurse';
 
@@ -48,6 +50,7 @@ class UserProfile {
         email: map['email'] as String?,
         phone: map['phone'] as String?,
         hospitalId: map['hospital_id'] as String?,
+        avatarUrl: map['avatar_url'] as String?,
       );
 
   factory UserProfile.fromRow(UserRow row) => UserProfile(
@@ -57,6 +60,7 @@ class UserProfile {
         email: row.email,
         phone: row.phone,
         hospitalId: row.hospitalId,
+        avatarUrl: row.avatarUrl,
       );
 }
 
@@ -143,6 +147,37 @@ class AuthRepository {
 
   Future<void> signOut() => _client.auth.signOut();
 
+  /// Sends a password-reset email via Supabase Auth. This always resolves
+  /// successfully even for an unknown email (Supabase doesn't leak account
+  /// existence) — callers should show a generic confirmation regardless.
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _client.auth.resetPasswordForEmail(email.trim());
+    } on AuthException catch (e) {
+      throw AppAuthException(e.message);
+    }
+  }
+
+  /// Uploads a new avatar for the current user to the public `avatars`
+  /// bucket and updates their profile. Online-first with no offline
+  /// fallback — a photo can't be usefully queued while offline, so a
+  /// network failure here surfaces as a real error to the caller.
+  Future<UserProfile> updateAvatar(Uint8List bytes, {required String contentType}) async {
+    final uid = currentUser?.id;
+    if (uid == null) {
+      throw AppAuthException('No active session — please sign in again.');
+    }
+    final path = '$uid/user.jpg';
+    await _client.storage.from('avatars').uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(contentType: contentType, upsert: true),
+        );
+    final url = _client.storage.from('avatars').getPublicUrl(path);
+    await _client.from('users').update({'avatar_url': url}).eq('id', uid);
+    return _fetchAndCacheProfile(uid);
+  }
+
   /// Profile for the current session read from the local cache only — used
   /// at splash so routing doesn't block on a network call.
   Future<UserProfile?> cachedProfile() async {
@@ -197,6 +232,7 @@ class AuthRepository {
             email: Value(profile.email),
             phone: Value(profile.phone),
             hospitalId: Value(profile.hospitalId),
+            avatarUrl: Value(profile.avatarUrl),
             syncStatus: const Value(SyncStatus.synced),
           ),
         );

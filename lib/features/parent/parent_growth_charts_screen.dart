@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/age_format.dart';
 import '../../core/utils/risk_mapping.dart';
@@ -62,9 +63,9 @@ class _ParentGrowthChartsScreenState extends State<ParentGrowthChartsScreen> {
             ),
             child: Row(
               children: [
-                const Expanded(
-                  child: Text('Growth Charts',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                Expanded(
+                  child: Text(tr('parent.charts.title'),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                 ),
                 if (selected != null)
                   _ChildPicker(
@@ -90,13 +91,13 @@ class _ParentGrowthChartsScreenState extends State<ParentGrowthChartsScreen> {
       padding: const EdgeInsets.all(20),
       children: [
         const SizedBox(height: 40),
-        const Center(
-          child: Text('No children linked yet — link one to see their growth chart.',
-              textAlign: TextAlign.center, style: TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
+        Center(
+          child: Text(tr('parent.charts.no_children'),
+              textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
         ),
         const SizedBox(height: 16),
         AppButton(
-          label: 'Link a child',
+          label: tr('parent.charts.link_a_child'),
           onPressed: () => Navigator.of(context).pushNamed('/parent/link-child'),
         ),
       ],
@@ -173,7 +174,7 @@ class _ChartsBodyState extends State<_ChartsBody> {
         final history = snapshot.data!; // historyForChild orders desc by takenAt
         if (history.isEmpty) {
           return Center(
-            child: Text('No measurements yet for ${widget.child.name}.',
+            child: Text(tr('parent.charts.no_measurements', args: [widget.child.name]),
                 style: const TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
           );
         }
@@ -192,8 +193,8 @@ class _ChartsBodyState extends State<_ChartsBody> {
           padding: const EdgeInsets.all(16),
           children: [
             GrowthChart(
-              title: 'Weight-for-Age',
-              unit: 'Z-score · WHO standard',
+              title: tr('parent.charts.weight_for_age'),
+              unit: tr('parent.charts.z_score_unit'),
               seriesByRange: seriesByRange,
               yMin: -4,
               yMax: 4,
@@ -204,29 +205,29 @@ class _ChartsBodyState extends State<_ChartsBody> {
             const SizedBox(height: 14),
             Row(
               children: [
-                ZScoreBox(label: 'Weight-Height', value: _fmt(latest.whz), color: _colorFor(latest.whz)),
+                ZScoreBox(label: tr('parent.charts.weight_height'), value: _fmt(latest.whz), color: _colorFor(latest.whz)),
                 const SizedBox(width: 9),
-                ZScoreBox(label: 'Height-Age', value: _fmt(latest.haz), color: _colorFor(latest.haz)),
+                ZScoreBox(label: tr('parent.charts.height_age'), value: _fmt(latest.haz), color: _colorFor(latest.haz)),
                 const SizedBox(width: 9),
-                ZScoreBox(label: 'Weight-Age', value: _fmt(latest.waz), color: _colorFor(latest.waz)),
+                ZScoreBox(label: tr('parent.charts.weight_age'), value: _fmt(latest.waz), color: _colorFor(latest.waz)),
               ],
             ),
             const SizedBox(height: 14),
             Row(
               children: [
                 _StatCard(
-                  label: 'Latest',
+                  label: tr('parent.charts.latest'),
                   value: '${latest.weightKg.toStringAsFixed(1)} kg',
-                  sub: previous == null ? 'First measurement' : _deltaLabel(latest, previous),
+                  sub: previous == null ? tr('parent.charts.first_measurement') : _deltaLabel(latest, previous),
                   subColor: previous == null
                       ? AppColors.textMuted
                       : (latest.weightKg >= previous.weightKg ? AppColors.riskNormalDot : AppColors.riskModerateDot),
                 ),
                 const SizedBox(width: 10),
                 _StatCard(
-                  label: 'WHO percentile',
+                  label: tr('parent.charts.who_percentile'),
                   value: '${WhoZScoreEngine.percentileForZ(latest.waz ?? 0).round()}th',
-                  sub: classification == ZClassification.normal ? 'Within normal range' : 'Needs attention',
+                  sub: classification == ZClassification.normal ? tr('parent.charts.within_normal_range') : tr('parent.charts.needs_attention'),
                   subColor: classification == ZClassification.normal ? AppColors.textMuted : AppColors.riskModerateDot,
                 ),
               ],
@@ -254,7 +255,7 @@ class _ChartsBodyState extends State<_ChartsBody> {
   String _deltaLabel(MeasurementRow latest, MeasurementRow previous) {
     final diff = latest.weightKg - previous.weightKg;
     final sign = diff >= 0 ? '+' : '';
-    return '$sign${diff.toStringAsFixed(1)} since ${_shortMonth(previous.takenAt)}';
+    return tr('parent.charts.since_month', args: [sign, diff.toStringAsFixed(1), _shortMonth(previous.takenAt)]);
   }
 
   String _fmt(double? z) => z == null ? '—' : z.toStringAsFixed(1);
@@ -275,8 +276,8 @@ class _ChartsBodyState extends State<_ChartsBody> {
     final bg = normal ? AppColors.infoBg : (severe ? AppColors.riskSevereBg : AppColors.riskModerateBg);
     final fg = normal ? AppColors.infoText : (severe ? AppColors.riskSevereText : AppColors.riskModerateText);
     final text = normal
-        ? "$name is tracking steadily along their curve. Pinch to zoom; tap any point to see that measurement's details."
-        : "$name's latest measurement shows ${severe ? 'severe' : 'moderate'} risk. Open their profile for recommended next steps.";
+        ? tr('parent.charts.info_normal', args: [name])
+        : tr('parent.charts.info_risk', args: [name, severe ? tr('parent.charts.severe') : tr('parent.charts.moderate')]);
 
     return GestureDetector(
       onTap: normal ? null : () => Navigator.of(context).pushNamed('/parent/child/${widget.child.id}'),

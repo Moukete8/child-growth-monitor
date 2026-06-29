@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,10 +15,19 @@ void main() {
     // needs its plugin channel mocked outside a real app context.
     SharedPreferences.setMockInitialValues({});
     await Supabase.initialize(url: 'https://example.supabase.co', publishableKey: 'test-anon-key');
+    await EasyLocalization.ensureInitialized();
   });
 
   testWidgets('App boots to the splash screen', (WidgetTester tester) async {
-    await tester.pumpWidget(const ChildGrowthApp());
+    await tester.pumpWidget(
+      EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('fr')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        startLocale: const Locale('en'),
+        child: const ChildGrowthApp(),
+      ),
+    );
     await tester.pump();
 
     expect(find.text('Child Growth\nMonitoring'), findsOneWidget);

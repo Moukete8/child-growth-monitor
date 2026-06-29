@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../design_system/atoms/app_button.dart';
@@ -38,11 +39,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   Future<void> _submit() async {
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      setState(() => _error = 'Enter your full name.');
+      setState(() => _error = tr('auth.complete_profile.error_name'));
       return;
     }
     if (_role == Role.nurse && _hospitalIdController.text.trim().isEmpty) {
-      setState(() => _error = 'Enter your hospital ID.');
+      setState(() => _error = tr('auth.complete_profile.error_hospital_id'));
       return;
     }
     setState(() {
@@ -75,7 +76,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         elevation: 0,
         foregroundColor: AppColors.textPrimary,
         automaticallyImplyLeading: false,
-        title: const Text('Finish setting up your account'),
+        title: Text(tr('auth.complete_profile.title')),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -83,9 +84,9 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "You're signed in with Google — tell us who you are so we can route you to the right dashboard.",
-                style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+              Text(
+                tr('auth.complete_profile.intro'),
+                style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
               ),
               const SizedBox(height: 20),
               Container(
@@ -97,14 +98,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                 padding: const EdgeInsets.all(5),
                 child: Row(
                   children: [
-                    Expanded(child: _roleTab('Parent', Icons.family_restroom, Role.parent)),
-                    Expanded(child: _roleTab('Nurse', Icons.medical_services_outlined, Role.nurse)),
+                    Expanded(child: _roleTab(tr('auth.login.parent_tab'), Icons.family_restroom, Role.parent)),
+                    Expanded(child: _roleTab(tr('auth.login.nurse_tab'), Icons.medical_services_outlined, Role.nurse)),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
               AppTextField(
-                label: 'Full name',
+                label: tr('auth.complete_profile.full_name'),
                 placeholder: 'Sarah Mballa',
                 icon: Icons.person_outline,
                 controller: _nameController,
@@ -112,7 +113,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               if (_role == Role.nurse) ...[
                 const SizedBox(height: 16),
                 AppTextField(
-                  label: 'Hospital ID',
+                  label: tr('auth.complete_profile.hospital_id'),
                   placeholder: 'HGD-0231',
                   icon: Icons.local_hospital_outlined,
                   controller: _hospitalIdController,
@@ -124,7 +125,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
               ],
               const SizedBox(height: 22),
               AppButton(
-                label: _submitting ? 'Saving…' : 'Continue',
+                label: _submitting ? tr('auth.complete_profile.saving') : tr('auth.complete_profile.continue'),
                 color: brand,
                 onPressed: _submitting ? null : _submit,
               ),

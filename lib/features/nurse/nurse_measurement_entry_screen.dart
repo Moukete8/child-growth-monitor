@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/age_format.dart';
 import '../../data/local/app_database.dart';
@@ -51,7 +52,7 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
     final weightKg = double.tryParse(_weight.text.trim());
     final heightCm = double.tryParse(_height.text.trim());
     if (weightKg == null || heightCm == null) {
-      setState(() => _error = 'Enter a valid weight and height.');
+      setState(() => _error = tr('nurse.measure.error_validation'));
       return;
     }
     setState(() {
@@ -69,7 +70,7 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
       if (!mounted) return;
       Navigator.of(context).pushReplacementNamed('/nurse/analysis/${widget.childId}');
     } catch (e) {
-      setState(() => _error = 'Could not save this measurement: $e');
+      setState(() => _error = tr('nurse.measure.error_submit', args: ['$e']));
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -93,7 +94,7 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Measurement Entry', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                      Text(tr('nurse.measure.title'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                       Text(
                         child == null ? '…' : '${child.name} · ${formatAge(child.dateOfBirth)}',
                         style: const TextStyle(fontSize: 12, color: Color(0xCCFFFFFF)),
@@ -112,11 +113,11 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
                         Row(
                           children: [
                             Expanded(
-                              child: AppTextField(label: 'Weight (kg)', controller: _weight, keyboardType: TextInputType.number),
+                              child: AppTextField(label: tr('nurse.measure.weight'), controller: _weight, keyboardType: TextInputType.number),
                             ),
                             const SizedBox(width: 11),
                             Expanded(
-                              child: AppTextField(label: 'Height (cm)', controller: _height, keyboardType: TextInputType.number),
+                              child: AppTextField(label: tr('nurse.measure.height'), controller: _height, keyboardType: TextInputType.number),
                             ),
                           ],
                         ),
@@ -124,11 +125,11 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
                         Row(
                           children: [
                             Expanded(
-                              child: AppTextField(label: 'MUAC (cm)', controller: _muac, keyboardType: TextInputType.number),
+                              child: AppTextField(label: tr('nurse.measure.muac'), controller: _muac, keyboardType: TextInputType.number),
                             ),
                             const SizedBox(width: 11),
                             Expanded(
-                              child: AppTextField(label: 'Head circ. (cm)', controller: _head, keyboardType: TextInputType.number),
+                              child: AppTextField(label: tr('nurse.measure.head_circumference'), controller: _head, keyboardType: TextInputType.number),
                             ),
                           ],
                         ),
@@ -140,15 +141,15 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
                         Container(
                           padding: const EdgeInsets.all(13),
                           decoration: BoxDecoration(color: AppColors.successBg, borderRadius: BorderRadius.circular(13)),
-                          child: const Row(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(Icons.verified_outlined, size: 19, color: AppColors.riskNormalDot),
-                              SizedBox(width: 10),
+                              const Icon(Icons.verified_outlined, size: 19, color: AppColors.riskNormalDot),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  'Z-scores are computed on-device with the WHO LMS engine and the official WHO Child Growth Standards tables — no connection required.',
-                                  style: TextStyle(fontSize: 12, color: AppColors.successText, height: 1.5),
+                                  tr('nurse.measure.info'),
+                                  style: const TextStyle(fontSize: 12, color: AppColors.successText, height: 1.5),
                                 ),
                               ),
                             ],
@@ -156,7 +157,7 @@ class _NurseMeasurementEntryScreenState extends State<NurseMeasurementEntryScree
                         ),
                         const SizedBox(height: 18),
                         AppButton(
-                          label: _submitting ? 'Computing…' : 'Submit & analyse',
+                          label: _submitting ? tr('nurse.measure.computing') : tr('nurse.measure.submit'),
                           icon: Icons.calculate_outlined,
                           color: AppColors.nursePrimary,
                           onPressed: _submitting ? null : _submit,

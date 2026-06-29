@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../design_system/atoms/app_button.dart';
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     if (email.isEmpty || password.isEmpty) {
-      setState(() => _error = 'Enter your email and password.');
+      setState(() => _error = tr('auth.login.error_empty'));
       return;
     }
     setState(() {
@@ -41,10 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
       _error = null;
     });
     try {
-      final profile = await _authRepository.signIn(email: email, password: password);
+      final profile = await _authRepository.signIn(
+        email: email,
+        password: password,
+      );
       if (!mounted) return;
-      Navigator.of(context)
-          .pushReplacementNamed(profile.isNurse ? '/nurse/dashboard' : '/parent/dashboard');
+      Navigator.of(context).pushReplacementNamed(
+        profile.isNurse ? '/nurse/dashboard' : '/parent/dashboard',
+      );
     } on AppAuthException catch (e) {
       setState(() => _error = e.message);
     } finally {
@@ -77,8 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             AuthHeader(
               role: _role,
-              title: 'Welcome back',
-              subtitle: 'Sign in to continue monitoring',
+              title: tr('auth.login.title'),
+              subtitle: tr('auth.login.subtitle'),
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -95,81 +100,131 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.all(5),
                       child: Row(
                         children: [
-                          Expanded(child: _roleTab('Parent', Icons.family_restroom, Role.parent)),
-                          Expanded(child: _roleTab('Nurse', Icons.medical_services_outlined, Role.nurse)),
+                          Expanded(
+                            child: _roleTab(
+                              tr('auth.login.parent_tab'),
+                              Icons.family_restroom,
+                              Role.parent,
+                            ),
+                          ),
+                          Expanded(
+                            child: _roleTab(
+                              tr('auth.login.nurse_tab'),
+                              Icons.medical_services_outlined,
+                              Role.nurse,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 20),
                     AppTextField(
-                      label: 'Email',
-                      placeholder: _role == Role.parent ? 'sarah@example.com' : 'nurse.joy@hgd.cm',
+                      label: tr('auth.login.email'),
+                      placeholder: _role == Role.parent
+                          ? 'sarah@example.com'
+                          : 'nurse.joy@hgd.cm',
                       icon: Icons.mail_outline,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 16),
                     AppTextField(
-                      label: 'Password',
+                      label: tr('auth.login.password'),
                       placeholder: '••••••••',
                       icon: Icons.lock_outline,
                       obscureText: _obscurePassword,
                       controller: _passwordController,
                       trailing: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                          _obscurePassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
                           size: 20,
                           color: AppColors.textFaint,
                         ),
-                        onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                        onPressed: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
                       ),
                     ),
                     if (_error != null) ...[
                       const SizedBox(height: 12),
-                      Text(_error!, style: const TextStyle(color: AppColors.dangerText, fontSize: 12.5)),
+                      Text(
+                        _error!,
+                        style: const TextStyle(
+                          color: AppColors.dangerText,
+                          fontSize: 12.5,
+                        ),
+                      ),
                     ],
                     const SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
-                        child: Text('Forgot password?',
-                            style: TextStyle(color: brand, fontSize: 12.5, fontWeight: FontWeight.w600)),
+                        onPressed: () => Navigator.of(context).pushNamed(
+                          '/forgot-password',
+                          arguments: _emailController.text.trim().isEmpty
+                              ? null
+                              : _emailController.text.trim(),
+                        ),
+                        child: Text(
+                          tr('auth.login.forgot_password'),
+                          style: TextStyle(
+                            color: brand,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     AppButton(
-                      label: _submitting ? 'Signing in…' : 'Log in',
+                      label: _submitting ? tr('auth.login.signing_in') : tr('auth.login.log_in'),
                       color: brand,
                       onPressed: _submitting ? null : _submit,
                     ),
                     const SizedBox(height: 20),
                     Row(
-                      children: const [
-                        Expanded(child: Divider(color: AppColors.border)),
+                      children: [
+                        const Expanded(child: Divider(color: AppColors.border)),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: Text('or', style: TextStyle(fontSize: 12, color: AppColors.textFaint)),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            tr('auth.login.or'),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textFaint,
+                            ),
+                          ),
                         ),
-                        Expanded(child: Divider(color: AppColors.border)),
+                        const Expanded(child: Divider(color: AppColors.border)),
                       ],
                     ),
                     const SizedBox(height: 20),
                     AppButton(
-                      label: 'Create an account',
+                      label: tr('auth.login.create_account'),
                       variant: AppButtonVariant.secondary,
-                      onPressed: () => Navigator.of(context).pushNamed('/signup', arguments: _role),
+                      onPressed: () => Navigator.of(
+                        context,
+                      ).pushNamed('/signup', arguments: _role),
                     ),
                     const SizedBox(height: 12),
                     AppButton(
-                      label: _googleSubmitting ? 'Connecting…' : 'Continue with Google',
+                      label: _googleSubmitting
+                          ? tr('auth.login.connecting')
+                          : tr('auth.login.continue_google'),
                       variant: AppButtonVariant.secondary,
                       onPressed: _googleSubmitting ? null : _submitGoogle,
                     ),
                     const SizedBox(height: 22),
-                    const Center(
-                      child: Text('Secured by Supabase · Works offline',
-                          style: TextStyle(fontSize: 12, color: AppColors.textFaint)),
+                    Center(
+                      child: Text(
+                        tr('auth.login.footer'),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textFaint,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -195,13 +250,20 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 18, color: active ? Colors.white : AppColors.textSecondary),
+            Icon(
+              icon,
+              size: 18,
+              color: active ? Colors.white : AppColors.textSecondary,
+            ),
             const SizedBox(width: 7),
-            Text(label,
-                style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w600,
-                    color: active ? Colors.white : AppColors.textSecondary)),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w600,
+                color: active ? Colors.white : AppColors.textSecondary,
+              ),
+            ),
           ],
         ),
       ),

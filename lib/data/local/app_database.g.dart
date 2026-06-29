@@ -66,6 +66,17 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _avatarUrlMeta = const VerificationMeta(
+    'avatarUrl',
+  );
+  @override
+  late final GeneratedColumn<String> avatarUrl = GeneratedColumn<String>(
+    'avatar_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _syncStatusMeta = const VerificationMeta(
     'syncStatus',
   );
@@ -86,6 +97,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
     email,
     phone,
     hospitalId,
+    avatarUrl,
     syncStatus,
   ];
   @override
@@ -139,6 +151,12 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
         hospitalId.isAcceptableOrUnknown(data['hospital_id']!, _hospitalIdMeta),
       );
     }
+    if (data.containsKey('avatar_url')) {
+      context.handle(
+        _avatarUrlMeta,
+        avatarUrl.isAcceptableOrUnknown(data['avatar_url']!, _avatarUrlMeta),
+      );
+    }
     if (data.containsKey('sync_status')) {
       context.handle(
         _syncStatusMeta,
@@ -178,6 +196,10 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
         DriftSqlType.string,
         data['${effectivePrefix}hospital_id'],
       ),
+      avatarUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}avatar_url'],
+      ),
       syncStatus: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}sync_status'],
@@ -198,6 +220,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
   final String? email;
   final String? phone;
   final String? hospitalId;
+  final String? avatarUrl;
   final String syncStatus;
   const UserRow({
     required this.id,
@@ -206,6 +229,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
     this.email,
     this.phone,
     this.hospitalId,
+    this.avatarUrl,
     required this.syncStatus,
   });
   @override
@@ -222,6 +246,9 @@ class UserRow extends DataClass implements Insertable<UserRow> {
     }
     if (!nullToAbsent || hospitalId != null) {
       map['hospital_id'] = Variable<String>(hospitalId);
+    }
+    if (!nullToAbsent || avatarUrl != null) {
+      map['avatar_url'] = Variable<String>(avatarUrl);
     }
     map['sync_status'] = Variable<String>(syncStatus);
     return map;
@@ -241,6 +268,9 @@ class UserRow extends DataClass implements Insertable<UserRow> {
       hospitalId: hospitalId == null && nullToAbsent
           ? const Value.absent()
           : Value(hospitalId),
+      avatarUrl: avatarUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatarUrl),
       syncStatus: Value(syncStatus),
     );
   }
@@ -257,6 +287,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
       email: serializer.fromJson<String?>(json['email']),
       phone: serializer.fromJson<String?>(json['phone']),
       hospitalId: serializer.fromJson<String?>(json['hospitalId']),
+      avatarUrl: serializer.fromJson<String?>(json['avatarUrl']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
     );
   }
@@ -270,6 +301,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
       'email': serializer.toJson<String?>(email),
       'phone': serializer.toJson<String?>(phone),
       'hospitalId': serializer.toJson<String?>(hospitalId),
+      'avatarUrl': serializer.toJson<String?>(avatarUrl),
       'syncStatus': serializer.toJson<String>(syncStatus),
     };
   }
@@ -281,6 +313,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
     Value<String?> email = const Value.absent(),
     Value<String?> phone = const Value.absent(),
     Value<String?> hospitalId = const Value.absent(),
+    Value<String?> avatarUrl = const Value.absent(),
     String? syncStatus,
   }) => UserRow(
     id: id ?? this.id,
@@ -289,6 +322,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
     email: email.present ? email.value : this.email,
     phone: phone.present ? phone.value : this.phone,
     hospitalId: hospitalId.present ? hospitalId.value : this.hospitalId,
+    avatarUrl: avatarUrl.present ? avatarUrl.value : this.avatarUrl,
     syncStatus: syncStatus ?? this.syncStatus,
   );
   UserRow copyWithCompanion(UsersCompanion data) {
@@ -301,6 +335,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
       hospitalId: data.hospitalId.present
           ? data.hospitalId.value
           : this.hospitalId,
+      avatarUrl: data.avatarUrl.present ? data.avatarUrl.value : this.avatarUrl,
       syncStatus: data.syncStatus.present
           ? data.syncStatus.value
           : this.syncStatus,
@@ -316,14 +351,23 @@ class UserRow extends DataClass implements Insertable<UserRow> {
           ..write('email: $email, ')
           ..write('phone: $phone, ')
           ..write('hospitalId: $hospitalId, ')
+          ..write('avatarUrl: $avatarUrl, ')
           ..write('syncStatus: $syncStatus')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, role, fullName, email, phone, hospitalId, syncStatus);
+  int get hashCode => Object.hash(
+    id,
+    role,
+    fullName,
+    email,
+    phone,
+    hospitalId,
+    avatarUrl,
+    syncStatus,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -334,6 +378,7 @@ class UserRow extends DataClass implements Insertable<UserRow> {
           other.email == this.email &&
           other.phone == this.phone &&
           other.hospitalId == this.hospitalId &&
+          other.avatarUrl == this.avatarUrl &&
           other.syncStatus == this.syncStatus);
 }
 
@@ -344,6 +389,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
   final Value<String?> email;
   final Value<String?> phone;
   final Value<String?> hospitalId;
+  final Value<String?> avatarUrl;
   final Value<String> syncStatus;
   final Value<int> rowid;
   const UsersCompanion({
@@ -353,6 +399,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
     this.hospitalId = const Value.absent(),
+    this.avatarUrl = const Value.absent(),
     this.syncStatus = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -363,6 +410,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
     this.hospitalId = const Value.absent(),
+    this.avatarUrl = const Value.absent(),
     this.syncStatus = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -375,6 +423,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
     Expression<String>? email,
     Expression<String>? phone,
     Expression<String>? hospitalId,
+    Expression<String>? avatarUrl,
     Expression<String>? syncStatus,
     Expression<int>? rowid,
   }) {
@@ -385,6 +434,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
       if (email != null) 'email': email,
       if (phone != null) 'phone': phone,
       if (hospitalId != null) 'hospital_id': hospitalId,
+      if (avatarUrl != null) 'avatar_url': avatarUrl,
       if (syncStatus != null) 'sync_status': syncStatus,
       if (rowid != null) 'rowid': rowid,
     });
@@ -397,6 +447,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
     Value<String?>? email,
     Value<String?>? phone,
     Value<String?>? hospitalId,
+    Value<String?>? avatarUrl,
     Value<String>? syncStatus,
     Value<int>? rowid,
   }) {
@@ -407,6 +458,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
       email: email ?? this.email,
       phone: phone ?? this.phone,
       hospitalId: hospitalId ?? this.hospitalId,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
       syncStatus: syncStatus ?? this.syncStatus,
       rowid: rowid ?? this.rowid,
     );
@@ -433,6 +485,9 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
     if (hospitalId.present) {
       map['hospital_id'] = Variable<String>(hospitalId.value);
     }
+    if (avatarUrl.present) {
+      map['avatar_url'] = Variable<String>(avatarUrl.value);
+    }
     if (syncStatus.present) {
       map['sync_status'] = Variable<String>(syncStatus.value);
     }
@@ -451,6 +506,7 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
           ..write('email: $email, ')
           ..write('phone: $phone, ')
           ..write('hospitalId: $hospitalId, ')
+          ..write('avatarUrl: $avatarUrl, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -562,6 +618,17 @@ class $ChildrenTable extends Children with TableInfo<$ChildrenTable, ChildRow> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _avatarUrlMeta = const VerificationMeta(
+    'avatarUrl',
+  );
+  @override
+  late final GeneratedColumn<String> avatarUrl = GeneratedColumn<String>(
+    'avatar_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _syncStatusMeta = const VerificationMeta(
     'syncStatus',
   );
@@ -585,6 +652,7 @@ class $ChildrenTable extends Children with TableInfo<$ChildrenTable, ChildRow> {
     registeredByNurseId,
     linkCode,
     parentContact,
+    avatarUrl,
     syncStatus,
   ];
   @override
@@ -675,6 +743,12 @@ class $ChildrenTable extends Children with TableInfo<$ChildrenTable, ChildRow> {
         ),
       );
     }
+    if (data.containsKey('avatar_url')) {
+      context.handle(
+        _avatarUrlMeta,
+        avatarUrl.isAcceptableOrUnknown(data['avatar_url']!, _avatarUrlMeta),
+      );
+    }
     if (data.containsKey('sync_status')) {
       context.handle(
         _syncStatusMeta,
@@ -726,6 +800,10 @@ class $ChildrenTable extends Children with TableInfo<$ChildrenTable, ChildRow> {
         DriftSqlType.string,
         data['${effectivePrefix}parent_contact'],
       ),
+      avatarUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}avatar_url'],
+      ),
       syncStatus: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}sync_status'],
@@ -749,6 +827,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
   final String? registeredByNurseId;
   final String linkCode;
   final String? parentContact;
+  final String? avatarUrl;
   final String syncStatus;
   const ChildRow({
     required this.id,
@@ -760,6 +839,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
     this.registeredByNurseId,
     required this.linkCode,
     this.parentContact,
+    this.avatarUrl,
     required this.syncStatus,
   });
   @override
@@ -781,6 +861,9 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
     map['link_code'] = Variable<String>(linkCode);
     if (!nullToAbsent || parentContact != null) {
       map['parent_contact'] = Variable<String>(parentContact);
+    }
+    if (!nullToAbsent || avatarUrl != null) {
+      map['avatar_url'] = Variable<String>(avatarUrl);
     }
     map['sync_status'] = Variable<String>(syncStatus);
     return map;
@@ -805,6 +888,9 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
       parentContact: parentContact == null && nullToAbsent
           ? const Value.absent()
           : Value(parentContact),
+      avatarUrl: avatarUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatarUrl),
       syncStatus: Value(syncStatus),
     );
   }
@@ -826,6 +912,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
       ),
       linkCode: serializer.fromJson<String>(json['linkCode']),
       parentContact: serializer.fromJson<String?>(json['parentContact']),
+      avatarUrl: serializer.fromJson<String?>(json['avatarUrl']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
     );
   }
@@ -842,6 +929,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
       'registeredByNurseId': serializer.toJson<String?>(registeredByNurseId),
       'linkCode': serializer.toJson<String>(linkCode),
       'parentContact': serializer.toJson<String?>(parentContact),
+      'avatarUrl': serializer.toJson<String?>(avatarUrl),
       'syncStatus': serializer.toJson<String>(syncStatus),
     };
   }
@@ -856,6 +944,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
     Value<String?> registeredByNurseId = const Value.absent(),
     String? linkCode,
     Value<String?> parentContact = const Value.absent(),
+    Value<String?> avatarUrl = const Value.absent(),
     String? syncStatus,
   }) => ChildRow(
     id: id ?? this.id,
@@ -873,6 +962,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
     parentContact: parentContact.present
         ? parentContact.value
         : this.parentContact,
+    avatarUrl: avatarUrl.present ? avatarUrl.value : this.avatarUrl,
     syncStatus: syncStatus ?? this.syncStatus,
   );
   ChildRow copyWithCompanion(ChildrenCompanion data) {
@@ -896,6 +986,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
       parentContact: data.parentContact.present
           ? data.parentContact.value
           : this.parentContact,
+      avatarUrl: data.avatarUrl.present ? data.avatarUrl.value : this.avatarUrl,
       syncStatus: data.syncStatus.present
           ? data.syncStatus.value
           : this.syncStatus,
@@ -914,6 +1005,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
           ..write('registeredByNurseId: $registeredByNurseId, ')
           ..write('linkCode: $linkCode, ')
           ..write('parentContact: $parentContact, ')
+          ..write('avatarUrl: $avatarUrl, ')
           ..write('syncStatus: $syncStatus')
           ..write(')'))
         .toString();
@@ -930,6 +1022,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
     registeredByNurseId,
     linkCode,
     parentContact,
+    avatarUrl,
     syncStatus,
   );
   @override
@@ -945,6 +1038,7 @@ class ChildRow extends DataClass implements Insertable<ChildRow> {
           other.registeredByNurseId == this.registeredByNurseId &&
           other.linkCode == this.linkCode &&
           other.parentContact == this.parentContact &&
+          other.avatarUrl == this.avatarUrl &&
           other.syncStatus == this.syncStatus);
 }
 
@@ -958,6 +1052,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
   final Value<String?> registeredByNurseId;
   final Value<String> linkCode;
   final Value<String?> parentContact;
+  final Value<String?> avatarUrl;
   final Value<String> syncStatus;
   final Value<int> rowid;
   const ChildrenCompanion({
@@ -970,6 +1065,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
     this.registeredByNurseId = const Value.absent(),
     this.linkCode = const Value.absent(),
     this.parentContact = const Value.absent(),
+    this.avatarUrl = const Value.absent(),
     this.syncStatus = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -983,6 +1079,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
     this.registeredByNurseId = const Value.absent(),
     required String linkCode,
     this.parentContact = const Value.absent(),
+    this.avatarUrl = const Value.absent(),
     this.syncStatus = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1000,6 +1097,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
     Expression<String>? registeredByNurseId,
     Expression<String>? linkCode,
     Expression<String>? parentContact,
+    Expression<String>? avatarUrl,
     Expression<String>? syncStatus,
     Expression<int>? rowid,
   }) {
@@ -1014,6 +1112,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
         'registered_by_nurse_id': registeredByNurseId,
       if (linkCode != null) 'link_code': linkCode,
       if (parentContact != null) 'parent_contact': parentContact,
+      if (avatarUrl != null) 'avatar_url': avatarUrl,
       if (syncStatus != null) 'sync_status': syncStatus,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1029,6 +1128,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
     Value<String?>? registeredByNurseId,
     Value<String>? linkCode,
     Value<String?>? parentContact,
+    Value<String?>? avatarUrl,
     Value<String>? syncStatus,
     Value<int>? rowid,
   }) {
@@ -1042,6 +1142,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
       registeredByNurseId: registeredByNurseId ?? this.registeredByNurseId,
       linkCode: linkCode ?? this.linkCode,
       parentContact: parentContact ?? this.parentContact,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
       syncStatus: syncStatus ?? this.syncStatus,
       rowid: rowid ?? this.rowid,
     );
@@ -1079,6 +1180,9 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
     if (parentContact.present) {
       map['parent_contact'] = Variable<String>(parentContact.value);
     }
+    if (avatarUrl.present) {
+      map['avatar_url'] = Variable<String>(avatarUrl.value);
+    }
     if (syncStatus.present) {
       map['sync_status'] = Variable<String>(syncStatus.value);
     }
@@ -1100,6 +1204,7 @@ class ChildrenCompanion extends UpdateCompanion<ChildRow> {
           ..write('registeredByNurseId: $registeredByNurseId, ')
           ..write('linkCode: $linkCode, ')
           ..write('parentContact: $parentContact, ')
+          ..write('avatarUrl: $avatarUrl, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -2350,6 +2455,7 @@ typedef $$UsersTableCreateCompanionBuilder =
       Value<String?> email,
       Value<String?> phone,
       Value<String?> hospitalId,
+      Value<String?> avatarUrl,
       Value<String> syncStatus,
       Value<int> rowid,
     });
@@ -2361,6 +2467,7 @@ typedef $$UsersTableUpdateCompanionBuilder =
       Value<String?> email,
       Value<String?> phone,
       Value<String?> hospitalId,
+      Value<String?> avatarUrl,
       Value<String> syncStatus,
       Value<int> rowid,
     });
@@ -2423,6 +2530,11 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<String> get hospitalId => $composableBuilder(
     column: $table.hospitalId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get avatarUrl => $composableBuilder(
+    column: $table.avatarUrl,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2496,6 +2608,11 @@ class $$UsersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get avatarUrl => $composableBuilder(
+    column: $table.avatarUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
     builder: (column) => ColumnOrderings(column),
@@ -2530,6 +2647,9 @@ class $$UsersTableAnnotationComposer
     column: $table.hospitalId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get avatarUrl =>
+      $composableBuilder(column: $table.avatarUrl, builder: (column) => column);
 
   GeneratedColumn<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
@@ -2596,6 +2716,7 @@ class $$UsersTableTableManager
                 Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
                 Value<String?> hospitalId = const Value.absent(),
+                Value<String?> avatarUrl = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UsersCompanion(
@@ -2605,6 +2726,7 @@ class $$UsersTableTableManager
                 email: email,
                 phone: phone,
                 hospitalId: hospitalId,
+                avatarUrl: avatarUrl,
                 syncStatus: syncStatus,
                 rowid: rowid,
               ),
@@ -2616,6 +2738,7 @@ class $$UsersTableTableManager
                 Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
                 Value<String?> hospitalId = const Value.absent(),
+                Value<String?> avatarUrl = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UsersCompanion.insert(
@@ -2625,6 +2748,7 @@ class $$UsersTableTableManager
                 email: email,
                 phone: phone,
                 hospitalId: hospitalId,
+                avatarUrl: avatarUrl,
                 syncStatus: syncStatus,
                 rowid: rowid,
               ),
@@ -2692,6 +2816,7 @@ typedef $$ChildrenTableCreateCompanionBuilder =
       Value<String?> registeredByNurseId,
       required String linkCode,
       Value<String?> parentContact,
+      Value<String?> avatarUrl,
       Value<String> syncStatus,
       Value<int> rowid,
     });
@@ -2706,6 +2831,7 @@ typedef $$ChildrenTableUpdateCompanionBuilder =
       Value<String?> registeredByNurseId,
       Value<String> linkCode,
       Value<String?> parentContact,
+      Value<String?> avatarUrl,
       Value<String> syncStatus,
       Value<int> rowid,
     });
@@ -2827,6 +2953,11 @@ class $$ChildrenTableFilterComposer
 
   ColumnFilters<String> get parentContact => $composableBuilder(
     column: $table.parentContact,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get avatarUrl => $composableBuilder(
+    column: $table.avatarUrl,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2976,6 +3107,11 @@ class $$ChildrenTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get avatarUrl => $composableBuilder(
+    column: $table.avatarUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
     builder: (column) => ColumnOrderings(column),
@@ -3063,6 +3199,9 @@ class $$ChildrenTableAnnotationComposer
     column: $table.parentContact,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get avatarUrl =>
+      $composableBuilder(column: $table.avatarUrl, builder: (column) => column);
 
   GeneratedColumn<String> get syncStatus => $composableBuilder(
     column: $table.syncStatus,
@@ -3208,6 +3347,7 @@ class $$ChildrenTableTableManager
                 Value<String?> registeredByNurseId = const Value.absent(),
                 Value<String> linkCode = const Value.absent(),
                 Value<String?> parentContact = const Value.absent(),
+                Value<String?> avatarUrl = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ChildrenCompanion(
@@ -3220,6 +3360,7 @@ class $$ChildrenTableTableManager
                 registeredByNurseId: registeredByNurseId,
                 linkCode: linkCode,
                 parentContact: parentContact,
+                avatarUrl: avatarUrl,
                 syncStatus: syncStatus,
                 rowid: rowid,
               ),
@@ -3234,6 +3375,7 @@ class $$ChildrenTableTableManager
                 Value<String?> registeredByNurseId = const Value.absent(),
                 required String linkCode,
                 Value<String?> parentContact = const Value.absent(),
+                Value<String?> avatarUrl = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ChildrenCompanion.insert(
@@ -3246,6 +3388,7 @@ class $$ChildrenTableTableManager
                 registeredByNurseId: registeredByNurseId,
                 linkCode: linkCode,
                 parentContact: parentContact,
+                avatarUrl: avatarUrl,
                 syncStatus: syncStatus,
                 rowid: rowid,
               ),

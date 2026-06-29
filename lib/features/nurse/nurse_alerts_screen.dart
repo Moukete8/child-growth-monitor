@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../core/utils/relative_time.dart';
 import '../../data/local/app_database.dart';
 import '../../data/repositories/alert_repository.dart';
 import '../../data/repositories/child_repository.dart';
@@ -41,13 +43,6 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
     return out;
   }
 
-  String _relativeTime(DateTime d) {
-    final days = DateTime.now().difference(d).inDays;
-    if (days <= 0) return 'Today';
-    if (days == 1) return '1 day';
-    return '$days days';
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<_AlertWithChild>>(
@@ -65,11 +60,11 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 18),
             child: Row(
               children: [
-                const Expanded(child: Text('Alerts', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
+                Expanded(child: Text(tr('nurse.alerts.title'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700))),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(999)),
-                  child: Text('$openCount active', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                  child: Text(tr('nurse.alerts.active_count', args: ['$openCount']), style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
                 ),
               ],
             ),
@@ -77,9 +72,9 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
           body: !snapshot.hasData
               ? const Center(child: CircularProgressIndicator())
               : items.isEmpty
-                  ? const Center(
-                      child: Text('No alerts — every measured child is within normal range.',
-                          textAlign: TextAlign.center, style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                  ? Center(
+                      child: Text(tr('nurse.alerts.empty'),
+                          textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
@@ -87,10 +82,10 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
                       separatorBuilder: (_, _) => const SizedBox(height: 11),
                       itemBuilder: (context, i) {
                         if (i == items.length) {
-                          return const Padding(
-                            padding: EdgeInsets.only(top: 8),
-                            child: Text('Tap an alert to open the child · check to resolve',
-                                textAlign: TextAlign.center, style: TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Text(tr('nurse.alerts.footer_hint'),
+                                textAlign: TextAlign.center, style: const TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
                           );
                         }
                         final item = items[i];
@@ -100,7 +95,7 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
                           level: level,
                           name: item.childName,
                           text: item.alert.message,
-                          time: _relativeTime(item.alert.createdAt),
+                          time: relativeTime(item.alert.createdAt),
                           resolved: item.alert.resolved,
                           onOpen: () => Navigator.of(context).pushNamed('/nurse/child/${item.alert.childId}'),
                           onResolve: () async {

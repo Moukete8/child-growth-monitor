@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../design_system/tokens/app_colors.dart';
@@ -70,10 +71,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               const SizedBox(height: 26),
-              const Text(
-                'Child Growth\nMonitoring',
+              Text(
+                tr('auth.splash.title'),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -82,9 +83,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'WHO-standard nutrition tracking',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Color(0xB3FFFFFF)),
+              Text(
+                tr('auth.splash.subtitle'),
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: Color(0xB3FFFFFF)),
               ),
               const SizedBox(height: 64),
               const SizedBox(
@@ -93,8 +94,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white),
               ),
               const SizedBox(height: 16),
-              const Text('Loading…',
-                  style: TextStyle(fontSize: 12, color: Color(0x99FFFFFF), letterSpacing: 0.5)),
+              Text(tr('auth.splash.loading'),
+                  style: const TextStyle(fontSize: 12, color: Color(0x99FFFFFF), letterSpacing: 0.5)),
             ],
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../local/app_database.dart';
 import '../local/database_provider.dart';
 import '../remote/supabase_client.dart';
+import '../sync/pending_flusher.dart';
 
 /// Creates and resolves the alerts a nurse sees when a measurement comes
 /// back moderate/severe, and that a linked parent sees too.
@@ -79,10 +80,67 @@ class AlertRepository {
             ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
           .get();
 
+  Future<List<AlertRow>> alertsForCurrentParent() async {
+    final parentId = _client.auth.currentUser?.id;
+    if (parentId == null) return [];
+    await _pullForParent(parentId);
+    final childIds = await (_db.select(_db.children)..where((c) => c.parentUserId.equals(parentId)))
+        .map((c) => c.id)
+        .get();
+    if (childIds.isEmpty) return [];
+    return (_db.select(_db.alerts)
+          ..where((a) => a.childId.isIn(childIds))
+          ..orderBy([(a) => OrderingTerm.desc(a.createdAt)]))
+        .get();
+  }
+
+  /// Pushes locally `pending` alerts (raised while offline) to Supabase.
+  /// Called by SyncService.
+  Future<SyncResult> pushPendingAlerts() => flushPending<AlertRow>(
+        selectPending: () =>
+            (_db.select(_db.alerts)..where((a) => a.syncStatus.equals(SyncStatus.pending))).get(),
+        toSupabaseMap: (r) => {
+          'id': r.id,
+          'child_id': r.childId,
+          'level': r.level,
+          'message': r.message,
+          'resolved': r.resolved,
+        },
+        supabaseTable: 'alerts',
+        markSynced: (row) => (_db.update(_db.alerts)..where((a) => a.id.equals(row.id)))
+            .write(const AlertsCompanion(syncStatus: Value(SyncStatus.synced))),
+        upsert: (table, data) => _client.from(table).upsert(data),
+      );
+
   Future<void> _pull({required String registeredByNurseId}) async {
     try {
       final childIds = await (_db.select(_db.children)
             ..where((c) => c.registeredByNurseId.equals(registeredByNurseId)))
+          .map((c) => c.id)
+          .get();
+      if (childIds.isEmpty) return;
+      final rows = await _client.from('alerts').select().inFilter('child_id', childIds);
+      for (final r in rows) {
+        await _db.into(_db.alerts).insertOnConflictUpdate(
+              AlertRow(
+                id: r['id'] as String,
+                childId: r['child_id'] as String,
+                level: r['level'] as String,
+                message: r['message'] as String,
+                createdAt: DateTime.parse(r['created_at'] as String),
+                resolved: r['resolved'] as bool,
+                syncStatus: SyncStatus.synced,
+              ).toCompanion(false),
+            );
+      }
+    } catch (_) {
+      // Offline — fall back to whatever is already cached locally.
+    }
+  }
+
+  Future<void> _pullForParent(String parentUserId) async {
+    try {
+      final childIds = await (_db.select(_db.children)..where((c) => c.parentUserId.equals(parentUserId)))
           .map((c) => c.id)
           .get();
       if (childIds.isEmpty) return;

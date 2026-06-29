@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/age_format.dart';
 import '../../core/utils/risk_mapping.dart';
@@ -51,7 +52,7 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                 children: [
                   HeaderIconButton(icon: Icons.arrow_back, onPressed: () => Navigator.of(context).pop()),
                   const SizedBox(width: 14),
-                  const Text('Growth Analysis', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text(tr('nurse.analysis.title'), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 ],
               ),
             ),
@@ -63,19 +64,19 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                   final child = snapshot.data!.child;
                   final history = snapshot.data!.history;
                   if (child == null) {
-                    return const Center(child: Text('Child not found.'));
+                    return Center(child: Text(tr('nurse.analysis.not_found')));
                   }
                   if (history.isEmpty) {
-                    return const Center(child: Text('No measurements recorded yet.'));
+                    return Center(child: Text(tr('nurse.analysis.no_measurements')));
                   }
                   final latest = history.first; // historyForChild orders desc by takenAt
                   final classification =
                       worstClassification(waz: latest.waz ?? 0, haz: latest.haz ?? 0, whz: latest.whz ?? 0);
                   final level = riskLevelFor(classification);
                   final label = switch (classification) {
-                    ZClassification.severe => 'Severe malnutrition',
-                    ZClassification.moderate => 'Moderate malnutrition',
-                    _ => 'Normal growth',
+                    ZClassification.severe => tr('nurse.analysis.severe_malnutrition'),
+                    ZClassification.moderate => tr('nurse.analysis.moderate_malnutrition'),
+                    _ => tr('nurse.analysis.normal_growth'),
                   };
 
                   final series = history.reversed
@@ -100,7 +101,7 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                           children: [
                             Column(
                               children: [
-                                const Text('BMI', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+                                Text(tr('nurse.analysis.bmi'), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
                                 const SizedBox(height: 2),
                                 Text((latest.bmi ?? 0).toStringAsFixed(1),
                                     style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.1)),
@@ -113,7 +114,7 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('WHO classification', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+                                  Text(tr('nurse.analysis.who_classification'), style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
                                   const SizedBox(height: 5),
                                   RiskBadge(level: level, label: label),
                                 ],
@@ -125,17 +126,17 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          ZScoreBox(label: 'Weight-Height', value: _fmt(latest.whz), color: _colorFor(latest.whz)),
+                          ZScoreBox(label: tr('nurse.analysis.weight_height'), value: _fmt(latest.whz), color: _colorFor(latest.whz)),
                           const SizedBox(width: 9),
-                          ZScoreBox(label: 'Height-Age', value: _fmt(latest.haz), color: _colorFor(latest.haz)),
+                          ZScoreBox(label: tr('nurse.analysis.height_age'), value: _fmt(latest.haz), color: _colorFor(latest.haz)),
                           const SizedBox(width: 9),
-                          ZScoreBox(label: 'Weight-Age', value: _fmt(latest.waz), color: _colorFor(latest.waz)),
+                          ZScoreBox(label: tr('nurse.analysis.weight_age'), value: _fmt(latest.waz), color: _colorFor(latest.waz)),
                         ],
                       ),
                       const SizedBox(height: 14),
                       GrowthChart(
-                        title: 'Weight-for-Age',
-                        unit: 'Z-score · WHO standard',
+                        title: tr('nurse.analysis.weight_for_age'),
+                        unit: tr('nurse.analysis.z_score_unit'),
                         seriesByRange: {'All': series},
                         yMin: -4,
                         yMax: 4,
@@ -160,15 +161,15 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                                   Icon(Icons.medical_information_outlined, size: 19,
                                       color: classification == ZClassification.severe ? AppColors.riskSevereText : AppColors.riskModerateText),
                                   const SizedBox(width: 8),
-                                  Text('Recommended action',
+                                  Text(tr('nurse.analysis.recommended_action'),
                                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700,
                                           color: classification == ZClassification.severe ? AppColors.riskSevereText : AppColors.riskModerateText)),
                                 ],
                               ),
                               const SizedBox(height: 9),
                               ...(classification == ZClassification.severe
-                                      ? const ['Refer to hospital nutritionist within 48 hours.', 'Begin therapeutic high-energy feeding (RUTF).']
-                                      : const ['Schedule a follow-up measurement within 2 weeks.', 'Counsel caregiver on feeding practices.'])
+                                      ? [tr('nurse.analysis.severe_action_1'), tr('nurse.analysis.severe_action_2')]
+                                      : [tr('nurse.analysis.moderate_action_1'), tr('nurse.analysis.moderate_action_2')])
                                   .map((t) => Padding(
                                         padding: const EdgeInsets.only(bottom: 6),
                                         child: Row(
@@ -185,7 +186,7 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                         ),
                       const SizedBox(height: 14),
                       AppButton(
-                        label: 'Generate Report',
+                        label: tr('nurse.analysis.generate_report'),
                         icon: Icons.description_outlined,
                         color: AppColors.nursePrimary,
                         onPressed: () => Navigator.of(context).pushNamed('/nurse/reports'),

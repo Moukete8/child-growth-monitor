@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/risk_mapping.dart';
 import '../../data/repositories/auth_repository.dart';
@@ -66,9 +67,9 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
         } else if (riskLevelFor(classification) == RiskLevel.moderate) {
           atRisk++;
         }
-        activity.add(_Activity(childName: child.name, text: 'New measurement', time: latest.takenAt));
+        activity.add(_Activity(childName: child.name, text: tr('nurse.dashboard.new_measurement'), time: latest.takenAt));
       } else {
-        activity.add(_Activity(childName: child.name, text: 'Registered & awaiting first measurement', time: child.dateOfBirth));
+        activity.add(_Activity(childName: child.name, text: tr('nurse.dashboard.registered_awaiting'), time: child.dateOfBirth));
       }
     }
     activity.sort((a, b) => b.time.compareTo(a.time));
@@ -104,17 +105,17 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.medical_services_outlined, color: Color(0xFF7FB4D8), size: 19),
-                    SizedBox(width: 7),
-                    Text('Nurse', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
-                    Spacer(),
-                    Icon(Icons.cloud_sync_outlined, color: Colors.white, size: 19),
+                    const Icon(Icons.medical_services_outlined, color: Color(0xFF7FB4D8), size: 19),
+                    const SizedBox(width: 7),
+                    Text(tr('nurse.dashboard.role_label'), style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
+                    const Spacer(),
+                    const Icon(Icons.cloud_sync_outlined, color: Colors.white, size: 19),
                   ],
                 ),
                 const SizedBox(height: 18),
-                Text('Welcome, ${data?.nurseName ?? '…'}',
+                Text(tr('nurse.dashboard.greeting', args: [data?.nurseName ?? '…']),
                     style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w700, letterSpacing: -0.4)),
               ],
             ),
@@ -126,16 +127,16 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
                   children: [
                     Row(
                       children: [
-                        StatTile(value: '${data!.monitored}', label: 'Monitored', tone: StatTone.brand),
+                        StatTile(value: '${data!.monitored}', label: tr('nurse.dashboard.monitored'), tone: StatTone.brand),
                         const SizedBox(width: 10),
-                        StatTile(value: '${data.atRisk}', label: 'At-risk', tone: StatTone.moderate),
+                        StatTile(value: '${data.atRisk}', label: tr('nurse.dashboard.at_risk'), tone: StatTone.moderate),
                         const SizedBox(width: 10),
-                        StatTile(value: '${data.critical}', label: 'Critical', tone: StatTone.severe),
+                        StatTile(value: '${data.critical}', label: tr('nurse.dashboard.critical'), tone: StatTone.severe),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    const Text('QUICK ACTIONS',
-                        style: TextStyle(
+                    Text(tr('nurse.dashboard.quick_actions'),
+                        style: const TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                     const SizedBox(height: 11),
                     GridView.count(
@@ -146,22 +147,22 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
                       mainAxisSpacing: 11,
                       childAspectRatio: 2.6,
                       children: [
-                        _quickAction(context, Icons.search, 'Search child', AppColors.nursePrimary, '/nurse/children'),
-                        _quickAction(context, Icons.person_add_outlined, 'Register child', AppColors.riskNormalDot, '/nurse/register'),
-                        _quickAction(context, Icons.straighten_outlined, 'Record measure', AppColors.parentPrimary, '/nurse/children'),
-                        _quickAction(context, Icons.warning_amber_outlined, 'View alerts', AppColors.riskModerateDot, '/nurse/alerts'),
+                        _quickAction(context, Icons.search, tr('nurse.dashboard.search_child'), AppColors.nursePrimary, '/nurse/children'),
+                        _quickAction(context, Icons.person_add_outlined, tr('nurse.dashboard.register_child'), AppColors.riskNormalDot, '/nurse/register'),
+                        _quickAction(context, Icons.straighten_outlined, tr('nurse.dashboard.record_measure'), AppColors.parentPrimary, '/nurse/children'),
+                        _quickAction(context, Icons.warning_amber_outlined, tr('nurse.dashboard.view_alerts'), AppColors.riskModerateDot, '/nurse/alerts'),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    const Text('RECENT ACTIVITY',
-                        style: TextStyle(
+                    Text(tr('nurse.dashboard.recent_activity'),
+                        style: const TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                     const SizedBox(height: 11),
                     if (data.activity.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Text('No activity yet — register a child to get started.',
-                            style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Text(tr('nurse.dashboard.no_activity'),
+                            style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
                       )
                     else
                       Container(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../design_system/atoms/app_button.dart';
@@ -45,15 +46,15 @@ class _SignupScreenState extends State<SignupScreen> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
-      setState(() => _error = 'Fill in your name, email and password.');
+      setState(() => _error = tr('auth.signup.error_validation'));
       return;
     }
     if (password.length < 6) {
-      setState(() => _error = 'Password must be at least 6 characters.');
+      setState(() => _error = tr('auth.signup.error_password_length'));
       return;
     }
     if (password != _confirmPasswordController.text) {
-      setState(() => _error = 'Passwords do not match.');
+      setState(() => _error = tr('auth.signup.error_password_match'));
       return;
     }
     setState(() {
@@ -78,7 +79,7 @@ class _SignupScreenState extends State<SignupScreen> {
         await showDialog<void>(
           context: context,
           builder: (_) => AlertDialog(
-            title: const Text('Confirm your email'),
+            title: Text(tr('auth.signup.confirm_email_title')),
             content: Text(e.message),
             actions: [
               TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK')),
@@ -120,8 +121,8 @@ class _SignupScreenState extends State<SignupScreen> {
           children: [
             AuthHeader(
               role: _role,
-              title: 'Create an account',
-              subtitle: 'Join to start monitoring',
+              title: tr('auth.signup.title'),
+              subtitle: tr('auth.signup.subtitle'),
               onBack: () => Navigator.of(context).pop(),
             ),
             Expanded(
@@ -139,16 +140,16 @@ class _SignupScreenState extends State<SignupScreen> {
                 padding: const EdgeInsets.all(5),
                 child: Row(
                   children: [
-                    Expanded(child: _roleTab('Parent', Icons.family_restroom, Role.parent)),
-                    Expanded(child: _roleTab('Nurse', Icons.medical_services_outlined, Role.nurse)),
+                    Expanded(child: _roleTab(tr('auth.login.parent_tab'), Icons.family_restroom, Role.parent)),
+                    Expanded(child: _roleTab(tr('auth.login.nurse_tab'), Icons.medical_services_outlined, Role.nurse)),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
-              AppTextField(label: 'Full name', placeholder: 'Sarah Mballa', icon: Icons.person_outline, controller: _nameController),
+              AppTextField(label: tr('auth.signup.full_name'), placeholder: 'Sarah Mballa', icon: Icons.person_outline, controller: _nameController),
               const SizedBox(height: 16),
               AppTextField(
-                label: 'Email',
+                label: tr('auth.signup.email'),
                 placeholder: _role == Role.parent ? 'sarah@example.com' : 'nurse.joy@hgd.cm',
                 icon: Icons.mail_outline,
                 controller: _emailController,
@@ -156,7 +157,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 16),
               AppTextField(
-                label: 'Phone (optional)',
+                label: tr('auth.signup.phone_optional'),
                 placeholder: '+237 6xx xxx xxx',
                 icon: Icons.phone_outlined,
                 controller: _phoneController,
@@ -165,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
               if (_role == Role.nurse) ...[
                 const SizedBox(height: 16),
                 AppTextField(
-                  label: 'Hospital ID',
+                  label: tr('auth.signup.hospital_id'),
                   placeholder: 'HGD-0231',
                   icon: Icons.local_hospital_outlined,
                   controller: _hospitalIdController,
@@ -173,8 +174,8 @@ class _SignupScreenState extends State<SignupScreen> {
               ],
               const SizedBox(height: 16),
               AppTextField(
-                label: 'Password',
-                placeholder: 'At least 6 characters',
+                label: tr('auth.signup.password'),
+                placeholder: tr('auth.signup.password_placeholder'),
                 icon: Icons.lock_outline,
                 obscureText: _obscurePassword,
                 controller: _passwordController,
@@ -189,8 +190,8 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 16),
               AppTextField(
-                label: 'Confirm password',
-                placeholder: 'Re-enter your password',
+                label: tr('auth.signup.confirm_password'),
+                placeholder: tr('auth.signup.confirm_password_placeholder'),
                 icon: Icons.lock_outline,
                 obscureText: _obscureConfirm,
                 controller: _confirmPasswordController,
@@ -209,13 +210,13 @@ class _SignupScreenState extends State<SignupScreen> {
               ],
               const SizedBox(height: 22),
               AppButton(
-                label: _submitting ? 'Creating account…' : 'Create account',
+                label: _submitting ? tr('auth.signup.creating_account') : tr('auth.signup.create_account'),
                 color: brand,
                 onPressed: _submitting ? null : _submit,
               ),
               const SizedBox(height: 12),
               AppButton(
-                label: _googleSubmitting ? 'Connecting…' : 'Continue with Google',
+                label: _googleSubmitting ? tr('auth.signup.connecting') : tr('auth.signup.continue_google'),
                 variant: AppButtonVariant.secondary,
                 onPressed: _googleSubmitting ? null : _submitGoogle,
               ),

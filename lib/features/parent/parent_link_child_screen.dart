@@ -1,9 +1,18 @@
+import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../data/repositories/child_repository.dart';
 import '../../design_system/atoms/app_button.dart';
 import '../../design_system/atoms/app_text_field.dart';
 import '../../design_system/organisms/gradient_header.dart';
 import '../../design_system/tokens/app_colors.dart';
+import 'qr_scan_screen.dart';
+
+/// mobile_scanner only supports Android/iOS/web — desktop falls back to the
+/// manual code entry, which is also the universal fallback for low-end
+/// Android phones without a working camera.
+bool get _canScanQr => kIsWeb || Platform.isAndroid || Platform.isIOS;
 
 class ParentLinkChildScreen extends StatefulWidget {
   const ParentLinkChildScreen({super.key});
@@ -24,10 +33,19 @@ class _ParentLinkChildScreenState extends State<ParentLinkChildScreen> {
     super.dispose();
   }
 
+  Future<void> _scanQr() async {
+    final code = await Navigator.of(
+      context,
+    ).push<String>(MaterialPageRoute(builder: (_) => const QrScanScreen()));
+    if (code == null || !mounted) return;
+    _codeController.text = code;
+    await _submit();
+  }
+
   Future<void> _submit() async {
     final code = _codeController.text.trim();
     if (code.isEmpty) {
-      setState(() => _error = 'Enter the code given to you by the nurse.');
+      setState(() => _error = tr('parent.link_child.error_empty'));
       return;
     }
     setState(() {
@@ -41,7 +59,7 @@ class _ParentLinkChildScreenState extends State<ParentLinkChildScreen> {
     } on ChildNotFoundException catch (e) {
       setState(() => _error = e.message);
     } catch (e) {
-      setState(() => _error = 'Could not link this child: $e');
+      setState(() => _error = tr('parent.link_child.error_link', args: ['$e']));
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -59,9 +77,18 @@ class _ParentLinkChildScreenState extends State<ParentLinkChildScreen> {
               padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
               child: Row(
                 children: [
-                  HeaderIconButton(icon: Icons.arrow_back, onPressed: () => Navigator.of(context).pop()),
+                  HeaderIconButton(
+                    icon: Icons.arrow_back,
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                   const SizedBox(width: 14),
-                  const Text('Link a Child', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text(
+                    tr('parent.link_child.title'),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -69,67 +96,104 @@ class _ParentLinkChildScreenState extends State<ParentLinkChildScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
-                  const Text(
-                    'Connect to a child record created by a nurse. Enter the code given to you at the clinic.',
-                    style: TextStyle(fontSize: 13.5, color: AppColors.textSecondary, height: 1.55),
+                  Text(
+                    tr('parent.link_child.intro'),
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      color: AppColors.textSecondary,
+                      height: 1.55,
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      border: Border.all(color: AppColors.border),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 188,
-                          height: 188,
-                          decoration: BoxDecoration(
-                            color: AppColors.parentGradientDeep,
-                            borderRadius: BorderRadius.circular(18),
+                  GestureDetector(
+                    onTap: _canScanQr ? _scanQr : null,
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        border: Border.all(color: AppColors.border),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 188,
+                            height: 188,
+                            decoration: BoxDecoration(
+                              color: AppColors.parentGradientDeep,
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.qr_code_2,
+                              color: Colors.white,
+                              size: 120,
+                            ),
                           ),
-                          alignment: Alignment.center,
-                          child: const Icon(Icons.qr_code_2, color: Colors.white, size: 120),
-                        ),
-                        const SizedBox(height: 16),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.info_outline, size: 19, color: AppColors.parentPrimary),
-                            SizedBox(width: 7),
-                            Text('QR scanning coming soon — use the code below',
-                                style: TextStyle(color: AppColors.parentPrimary, fontSize: 13, fontWeight: FontWeight.w600)),
-                          ],
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                size: 19,
+                                color: AppColors.parentPrimary,
+                              ),
+                              const SizedBox(width: 7),
+                              Text(
+                                _canScanQr
+                                    ? tr('parent.link_child.scan_qr')
+                                    : tr('parent.link_child.scan_coming_soon'),
+                                style: const TextStyle(
+                                  color: AppColors.parentPrimary,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 22),
                   Row(
-                    children: const [
-                      Expanded(child: Divider(color: AppColors.border)),
+                    children: [
+                      const Expanded(child: Divider(color: AppColors.border)),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text('or enter code', style: TextStyle(fontSize: 12, color: AppColors.textFaint)),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          tr('parent.link_child.or_enter_code'),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textFaint,
+                          ),
+                        ),
                       ),
-                      Expanded(child: Divider(color: AppColors.border)),
+                      const Expanded(child: Divider(color: AppColors.border)),
                     ],
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
-                    placeholder: 'e.g. CMR4X9',
+                    placeholder: tr('parent.link_child.code_placeholder'),
                     icon: Icons.sell_outlined,
                     controller: _codeController,
                   ),
                   if (_error != null) ...[
                     const SizedBox(height: 12),
-                    Text(_error!, style: const TextStyle(color: AppColors.dangerText, fontSize: 12.5)),
+                    Text(
+                      _error!,
+                      style: const TextStyle(
+                        color: AppColors.dangerText,
+                        fontSize: 12.5,
+                      ),
+                    ),
                   ],
                   const SizedBox(height: 16),
                   AppButton(
-                    label: _submitting ? 'Linking…' : 'Link Child',
+                    label: _submitting
+                        ? tr('parent.link_child.linking')
+                        : tr('parent.link_child.submit'),
                     onPressed: _submitting ? null : _submit,
                   ),
                 ],

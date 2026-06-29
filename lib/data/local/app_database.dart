@@ -21,6 +21,7 @@ class Users extends Table {
   TextColumn get email => text().nullable()();
   TextColumn get phone => text().nullable()();
   TextColumn get hospitalId => text().nullable()(); // nurse-only
+  TextColumn get avatarUrl => text().nullable()();
   TextColumn get syncStatus => text().withDefault(const Constant(SyncStatus.synced))();
 
   @override
@@ -38,6 +39,7 @@ class Children extends Table {
   TextColumn get registeredByNurseId => text().nullable().references(Users, #id)();
   TextColumn get linkCode => text()(); // short code/QR payload used to claim this child
   TextColumn get parentContact => text().nullable()(); // phone/email the nurse noted, reference only
+  TextColumn get avatarUrl => text().nullable()(); // set once by the nurse at registration, changeable by the linked parent afterwards
   TextColumn get syncStatus => text().withDefault(const Constant(SyncStatus.pending))();
 
   @override
@@ -87,7 +89,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(conn.openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

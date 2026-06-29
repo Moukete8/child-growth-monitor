@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../atoms/risk_badge.dart';
 import '../tokens/app_colors.dart';
+import 'avatar.dart';
 
 /// Molecule: child summary card used on the Parent dashboard.
 class ChildCard extends StatelessWidget {
@@ -12,6 +13,7 @@ class ChildCard extends StatelessWidget {
     required this.lastUpdated,
     required this.level,
     required this.badgeLabel,
+    this.avatarUrl,
     this.onTap,
   });
 
@@ -21,6 +23,7 @@ class ChildCard extends StatelessWidget {
   final String lastUpdated;
   final RiskLevel level;
   final String badgeLabel;
+  final String? avatarUrl;
   final VoidCallback? onTap;
 
   @override
@@ -39,7 +42,13 @@ class ChildCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const CircleAvatar(radius: 27, backgroundColor: AppColors.background, child: Icon(Icons.child_care, color: AppColors.textFaint)),
+              AppAvatar(
+                imageUrl: avatarUrl,
+                fallbackIcon: Icons.child_care,
+                radius: 27,
+                backgroundColor: AppColors.background,
+                iconColor: AppColors.textFaint,
+              ),
               const SizedBox(width: 13),
               Expanded(
                 child: Column(
