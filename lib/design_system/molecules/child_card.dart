@@ -58,31 +58,31 @@ class ChildCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                         ),
                         RiskBadge(level: level, label: badgeLabel),
                       ],
                     ),
                     const SizedBox(height: 3),
-                    Text(meta, style: const TextStyle(fontSize: 12.5, color: AppColors.textMuted)),
+                    Text(meta, style: TextStyle(fontSize: 12.5, color: AppColors.textMuted)),
                     const SizedBox(height: 9),
                     Row(
                       children: [
                         const Icon(Icons.monitor_weight_outlined, size: 16, color: AppColors.parentPrimary),
                         const SizedBox(width: 6),
                         Text(metric,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
-                        const Text('  ·  ', style: TextStyle(color: AppColors.textFaint)),
+                        Text('  ·  ', style: TextStyle(color: AppColors.textFaint)),
                         Text('Updated $lastUpdated',
-                            style: const TextStyle(fontSize: 12.5, color: AppColors.textSecondary)),
+                            style: TextStyle(fontSize: 12.5, color: AppColors.textSecondary)),
                       ],
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.textFaint),
+              Icon(Icons.chevron_right, color: AppColors.textFaint),
             ],
           ),
         ),

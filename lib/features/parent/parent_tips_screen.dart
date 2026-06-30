@@ -6,7 +6,7 @@ import '../../data/local/app_database.dart';
 import '../../data/repositories/child_repository.dart';
 import '../../data/repositories/measurement_repository.dart';
 import '../../design_system/molecules/recommendation_card.dart';
-import '../../design_system/templates/role_scaffold.dart';
+import '../../design_system/organisms/gradient_header.dart';
 import '../../design_system/tokens/app_colors.dart';
 
 class ParentTipsScreen extends StatefulWidget {
@@ -71,30 +71,24 @@ class _ParentTipsScreenState extends State<ParentTipsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RoleScaffold(
-      role: Role.parent,
-      currentNavIndex: 2,
-      onNavTap: (i) => _navigate(context, i),
-      header: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          color: AppColors.surface,
-          border: Border(bottom: BorderSide(color: AppColors.border)),
+    return Column(
+      children: [
+        GradientHeader(
+          role: Role.parent,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(tr('parent.tips_screen.title'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 3),
+              Text(
+                _selected == null ? tr('parent.tips_screen.subtitle_no_child') : tr('parent.tips_screen.subtitle_child', args: [_selected!.name]),
+                style: const TextStyle(fontSize: 12.5, color: Color(0xCCFFFFFF)),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(tr('parent.tips_screen.title'), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-            const SizedBox(height: 3),
-            Text(
-              _selected == null ? tr('parent.tips_screen.subtitle_no_child') : tr('parent.tips_screen.subtitle_child', args: [_selected!.name]),
-              style: const TextStyle(fontSize: 12.5, color: AppColors.textMuted),
-            ),
-          ],
-        ),
-      ),
-      body: _loading
+        Expanded(
+          child: _loading
           ? const Center(child: CircularProgressIndicator())
           : ListView(
               padding: const EdgeInsets.all(16),
@@ -128,7 +122,7 @@ class _ParentTipsScreenState extends State<ParentTipsScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: Text(tr('tips.empty'),
-                        textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                        textAlign: TextAlign.center, style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                   )
                 else ...[
                   for (var i = 0; i < _recommendations!.length; i++) ...[
@@ -161,11 +155,8 @@ class _ParentTipsScreenState extends State<ParentTipsScreen> {
                 ],
               ],
             ),
+        ),
+      ],
     );
-  }
-
-  void _navigate(BuildContext context, int i) {
-    const routes = ['/parent/dashboard', '/parent/charts', '/parent/tips', '/parent/notifications', '/parent/profile'];
-    if (i != 2) Navigator.of(context).pushReplacementNamed(routes[i]);
   }
 }

@@ -33,7 +33,7 @@ class AppTextField extends StatelessWidget {
         if (label != null) ...[
           Text(
             label!,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
@@ -60,13 +60,13 @@ class AppTextField extends StatelessWidget {
                   obscureText: obscureText,
                   keyboardType: keyboardType,
                   onChanged: onChanged,
-                  style: const TextStyle(fontSize: 14.5, color: AppColors.textPrimary),
+                  style: TextStyle(fontSize: 14.5, color: AppColors.textPrimary),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(vertical: 14),
                     hintText: placeholder,
-                    hintStyle: const TextStyle(color: AppColors.textFaint),
+                    hintStyle: TextStyle(color: AppColors.textFaint),
                   ),
                 ),
               ),

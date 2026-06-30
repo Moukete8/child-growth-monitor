@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../core/theme/theme_controller.dart';
 import '../../core/utils/image_picker_sheet.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/sync/sync_service.dart';
@@ -166,7 +167,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                             children: [
                               Text(
                                 tr('nurse.settings.sync_status'),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -175,7 +176,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                               const SizedBox(height: 1),
                               Text(
                                 _syncLabel(status),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11.5,
                                   color: AppColors.textMuted,
                                 ),
@@ -222,9 +223,74 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                 },
               ),
               const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pushNamed('/change-password', arguments: profile?.email ?? ''),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.lock_outline, color: AppColors.nursePrimary, size: 21),
+                        const SizedBox(width: 13),
+                        Expanded(
+                          child: Text(
+                            tr('nurse.settings.change_password'),
+                            style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
+                          ),
+                        ),
+                        Icon(Icons.chevron_right, color: AppColors.textFaint),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.dark_mode_outlined, color: AppColors.nursePrimary, size: 21),
+                      const SizedBox(width: 13),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tr('nurse.settings.theme'),
+                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted),
+                            ),
+                            const SizedBox(height: 1),
+                            Text(
+                              tr('nurse.settings.dark_mode'),
+                              style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Switch(
+                        value: AppColors.isDark,
+                        activeThumbColor: AppColors.nursePrimary,
+                        onChanged: (_) => ThemeController.instance.toggle(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
               Text(
                 tr('nurse.settings.preferences'),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textMuted,
@@ -259,7 +325,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                             Expanded(
                               child: Text(
                                 tr('language'),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.textPrimary,
                                 ),
@@ -267,12 +333,12 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                             ),
                             Text(
                               context.locale.languageCode.toUpperCase(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 color: AppColors.textMuted,
                               ),
                             ),
-                            const Icon(
+                            Icon(
                               Icons.chevron_right,
                               color: AppColors.textFaint,
                             ),
@@ -280,7 +346,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                         ),
                       ),
                     ),
-                    const Divider(height: 1, color: AppColors.borderSubtle),
+                    Divider(height: 1, color: AppColors.borderSubtle),
                     Padding(
                       padding: const EdgeInsets.all(14),
                       child: Row(
@@ -294,7 +360,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                           Expanded(
                             child: Text(
                               tr('nurse.settings.audit_trail'),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 color: AppColors.textPrimary,
                               ),
@@ -302,7 +368,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
                           ),
                           Text(
                             tr('nurse.settings.audit_trail_subtitle'),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11.5,
                               color: AppColors.textMuted,
                             ),

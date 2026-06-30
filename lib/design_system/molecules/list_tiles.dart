@@ -57,7 +57,7 @@ class _IconRowCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                         ),
                         if (unreadDot)
@@ -117,7 +117,7 @@ class NotificationTile extends StatelessWidget {
       subtitle: body,
       unreadDot: unread,
       onTap: onTap,
-      footer: Text(time, style: const TextStyle(fontSize: 11, color: AppColors.textFaint)),
+      footer: Text(time, style: TextStyle(fontSize: 11, color: AppColors.textFaint)),
     );
   }
 }
@@ -159,14 +159,14 @@ class ActivityTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(name,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 13.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                 const SizedBox(height: 1),
-                Text(text, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                Text(text, style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
               ],
             ),
           ),
-          Text(time, style: const TextStyle(fontSize: 11, color: AppColors.textFaint)),
+          Text(time, style: TextStyle(fontSize: 11, color: AppColors.textFaint)),
         ],
       ),
     );
@@ -221,12 +221,12 @@ class AlertTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(name,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                   const SizedBox(height: 2),
                   Text(text, style: const TextStyle(fontSize: 12.5, color: Color(0xFF6A7C84))),
                   const SizedBox(height: 5),
-                  Text(time, style: const TextStyle(fontSize: 11, color: AppColors.textFaint)),
+                  Text(time, style: TextStyle(fontSize: 11, color: AppColors.textFaint)),
                 ],
               ),
             ),
@@ -302,10 +302,10 @@ class ReportTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(title,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                     const SizedBox(height: 2),
-                    Text(subtitle, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                    Text(subtitle, style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                   ],
                 ),
               ),
@@ -340,7 +340,7 @@ class ReportTile extends StatelessWidget {
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
         backgroundColor: fill,
-        side: fill == null ? const BorderSide(color: AppColors.border) : BorderSide.none,
+        side: fill == null ? BorderSide(color: AppColors.border) : BorderSide.none,
         padding: const EdgeInsets.symmetric(vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
       ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../core/theme/theme_controller.dart';
 import '../../core/utils/image_picker_sheet.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/child_repository.dart';
@@ -8,7 +9,6 @@ import '../../data/sync/sync_service_provider.dart';
 import '../../design_system/atoms/app_button.dart';
 import '../../design_system/molecules/avatar.dart';
 import '../../design_system/organisms/gradient_header.dart';
-import '../../design_system/templates/role_scaffold.dart';
 import '../../design_system/tokens/app_colors.dart';
 
 class ParentProfileScreen extends StatefulWidget {
@@ -67,11 +67,9 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
       builder: (context, snapshot) {
         final profile = snapshot.data?.profile;
         final childCount = snapshot.data?.childCount ?? 0;
-        return RoleScaffold(
-          role: Role.parent,
-          currentNavIndex: 4,
-          onNavTap: (i) => _navigate(context, i),
-          header: GradientHeader(
+        return Column(
+          children: [
+            GradientHeader(
             role: Role.parent,
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -134,7 +132,8 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
               ],
             ),
           ),
-          body: ListView(
+          Expanded(
+            child: ListView(
             padding: const EdgeInsets.all(18),
             children: [
               Container(
@@ -155,15 +154,64 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                       Icons.mail_outline,
                       tr('parent.profile.email'),
                       profile?.email ?? '—',
+                      divider: true,
+                    ),
+                    _infoRow(
+                      Icons.lock_outline,
+                      tr('parent.profile.change_password'),
+                      '••••••••',
                       divider: false,
+                      onTap: () => Navigator.of(context).pushNamed('/change-password', arguments: profile?.email ?? ''),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  border: Border.all(color: AppColors.border),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.dark_mode_outlined, color: AppColors.parentPrimary, size: 21),
+                      const SizedBox(width: 13),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tr('parent.profile.theme'),
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textMuted,
+                              ),
+                            ),
+                            const SizedBox(height: 1),
+                            Text(
+                              tr('parent.profile.dark_mode'),
+                              style: TextStyle(fontSize: 14, color: AppColors.textPrimary),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Switch(
+                        value: AppColors.isDark,
+                        activeThumbColor: AppColors.parentPrimary,
+                        onChanged: (_) => ThemeController.instance.toggle(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
               Text(
                 tr('parent.profile.preferences'),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textMuted,
@@ -198,7 +246,7 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                             Expanded(
                               child: Text(
                                 tr('language'),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   color: AppColors.textPrimary,
                                 ),
@@ -206,12 +254,12 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                             ),
                             Text(
                               context.locale.languageCode.toUpperCase(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
                                 color: AppColors.textMuted,
                               ),
                             ),
-                            const Icon(
+                            Icon(
                               Icons.chevron_right,
                               color: AppColors.textFaint,
                             ),
@@ -219,7 +267,7 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                         ),
                       ),
                     ),
-                    const Divider(height: 1, color: AppColors.borderSubtle),
+                    Divider(height: 1, color: AppColors.borderSubtle),
                     StreamBuilder<SyncStatusSnapshot>(
                       stream: syncService.statusStream,
                       initialData: syncService.lastStatus,
@@ -241,7 +289,7 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                                   children: [
                                     Text(
                                       tr('parent.profile.offline_data'),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         color: AppColors.textPrimary,
                                       ),
@@ -249,7 +297,7 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                                     const SizedBox(height: 1),
                                     Text(
                                       _syncLabel(status),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11.5,
                                         color: AppColors.textMuted,
                                       ),
@@ -283,7 +331,9 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
                 ).pushNamedAndRemoveUntil('/login', (route) => false),
               ),
             ],
+            ),
           ),
+          ],
         );
       },
     );
@@ -294,54 +344,48 @@ class _ParentProfileScreenState extends State<ParentProfileScreen> {
     String label,
     String value, {
     required bool divider,
+    VoidCallback? onTap,
   }) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            children: [
-              Icon(icon, color: AppColors.parentPrimary, size: 21),
-              const SizedBox(width: 13),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textMuted,
+        InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                Icon(icon, color: AppColors.parentPrimary, size: 21),
+                const SizedBox(width: 13),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textMuted,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 1),
-                    Text(
-                      value,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textPrimary,
+                      const SizedBox(height: 1),
+                      Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                if (onTap != null) Icon(Icons.chevron_right, color: AppColors.textFaint),
+              ],
+            ),
           ),
         ),
-        if (divider) const Divider(height: 1, color: AppColors.borderSubtle),
+        if (divider) Divider(height: 1, color: AppColors.borderSubtle),
       ],
     );
-  }
-
-  void _navigate(BuildContext context, int i) {
-    const routes = [
-      '/parent/dashboard',
-      '/parent/charts',
-      '/parent/tips',
-      '/parent/notifications',
-      '/parent/profile',
-    ];
-    if (i != 4) Navigator.of(context).pushReplacementNamed(routes[i]);
   }
 }

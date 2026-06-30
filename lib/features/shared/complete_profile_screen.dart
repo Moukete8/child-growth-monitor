@@ -86,7 +86,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
             children: [
               Text(
                 tr('auth.complete_profile.intro'),
-                style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                style: TextStyle(fontSize: 13, color: AppColors.textMuted),
               ),
               const SizedBox(height: 20),
               Container(

@@ -7,10 +7,11 @@ import '../remote/supabase_client.dart';
 /// Thrown for any sign-in/sign-up failure, including the special
 /// [confirmEmailRequired] case so the UI can show the right message.
 class AppAuthException implements Exception {
-  AppAuthException(this.message, {this.confirmEmailRequired = false});
+  AppAuthException(this.message, {this.confirmEmailRequired = false, this.wrongOldPassword = false});
 
   final String message;
   final bool confirmEmailRequired;
+  final bool wrongOldPassword;
 
   @override
   String toString() => message;
@@ -147,12 +148,44 @@ class AuthRepository {
 
   Future<void> signOut() => _client.auth.signOut();
 
+  /// Re-triggers Supabase's signup confirmation email — used when the first
+  /// one never arrives (e.g. SMTP misconfiguration on the project) so the
+  /// user isn't stuck re-registering with the same email.
+  Future<void> resendConfirmationEmail(String email) async {
+    try {
+      await _client.auth.resend(type: OtpType.signup, email: email.trim());
+    } on AuthException catch (e) {
+      throw AppAuthException(e.message);
+    }
+  }
+
   /// Sends a password-reset email via Supabase Auth. This always resolves
   /// successfully even for an unknown email (Supabase doesn't leak account
   /// existence) — callers should show a generic confirmation regardless.
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _client.auth.resetPasswordForEmail(email.trim());
+    } on AuthException catch (e) {
+      throw AppAuthException(e.message);
+    }
+  }
+
+  /// Changes the current user's password. Validates [oldPassword] first via
+  /// a fresh sign-in (Supabase's `updateUser` doesn't ask for it on its
+  /// own), so a wrong old password fails clearly instead of silently
+  /// trusting whatever session is already active.
+  Future<void> changePassword({
+    required String email,
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      await _client.auth.signInWithPassword(email: email, password: oldPassword);
+    } on AuthException {
+      throw AppAuthException('Incorrect current password.', wrongOldPassword: true);
+    }
+    try {
+      await _client.auth.updateUser(UserAttributes(password: newPassword));
     } on AuthException catch (e) {
       throw AppAuthException(e.message);
     }

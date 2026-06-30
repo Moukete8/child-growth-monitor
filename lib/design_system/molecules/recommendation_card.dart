@@ -56,10 +56,10 @@ class RecommendationCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(title,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                         const SizedBox(height: 2),
-                        Text(shortText, style: const TextStyle(fontSize: 12.5, color: AppColors.textMuted)),
+                        Text(shortText, style: TextStyle(fontSize: 12.5, color: AppColors.textMuted)),
                       ],
                     ),
                   ),
@@ -67,8 +67,8 @@ class RecommendationCard extends StatelessWidget {
                 ],
               ),
               if (expanded) ...[
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Divider(height: 1, color: AppColors.borderSubtle),
                 ),
                 Text(body,

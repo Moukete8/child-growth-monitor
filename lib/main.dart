@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_controller.dart';
 import 'data/remote/supabase_client.dart';
 import 'data/sync/sync_service_provider.dart';
 import 'design_system/tokens/app_colors.dart';
@@ -15,12 +16,9 @@ import 'features/nurse/nurse_reports_screen.dart';
 import 'features/nurse/nurse_search_screen.dart';
 import 'features/nurse/nurse_settings_screen.dart';
 import 'features/parent/parent_child_profile_screen.dart';
-import 'features/parent/parent_dashboard_screen.dart';
-import 'features/parent/parent_growth_charts_screen.dart';
 import 'features/parent/parent_link_child_screen.dart';
-import 'features/parent/parent_notifications_screen.dart';
-import 'features/parent/parent_profile_screen.dart';
-import 'features/parent/parent_tips_screen.dart';
+import 'features/parent/parent_shell.dart';
+import 'features/shared/change_password_screen.dart';
 import 'features/shared/complete_profile_screen.dart';
 import 'features/shared/forgot_password_screen.dart';
 import 'features/shared/login_screen.dart';
@@ -59,6 +57,7 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    ThemeController.instance.load();
   }
 
   @override
@@ -76,15 +75,20 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Child Growth Monitoring',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(Role.parent),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      initialRoute: '/splash',
-      onGenerateRoute: _onGenerateRoute,
+    return ListenableBuilder(
+      listenable: ThemeController.instance,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'Child Growth Monitoring',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light(Role.parent),
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          initialRoute: '/splash',
+          onGenerateRoute: _onGenerateRoute,
+        );
+      },
     );
   }
 
@@ -102,6 +106,10 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
         page = ForgotPasswordScreen(
           prefillEmail: settings.arguments as String?,
         );
+      case '/change-password':
+        page = ChangePasswordScreen(
+          email: settings.arguments as String? ?? '',
+        );
       case '/signup':
         page = SignupScreen(
           initialRole: (settings.arguments as Role?) ?? Role.parent,
@@ -109,17 +117,17 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
       case '/complete-profile':
         page = const CompleteProfileScreen();
       case '/parent/dashboard':
-        page = const ParentDashboardScreen();
+        page = const ParentShell(initialIndex: 0);
       case '/parent/charts':
-        page = const ParentGrowthChartsScreen();
+        page = const ParentShell(initialIndex: 1);
       case '/parent/tips':
-        page = const ParentTipsScreen();
+        page = const ParentShell(initialIndex: 2);
       case '/parent/notifications':
-        page = const ParentNotificationsScreen();
+        page = const ParentShell(initialIndex: 3);
       case '/parent/link-child':
         page = const ParentLinkChildScreen();
       case '/parent/profile':
-        page = const ParentProfileScreen();
+        page = const ParentShell(initialIndex: 4);
       case '/nurse/dashboard':
         page = const NurseDashboardScreen();
       case '/nurse/children':

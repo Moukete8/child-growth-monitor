@@ -9,7 +9,6 @@ import '../../data/repositories/child_repository.dart';
 import '../../data/repositories/measurement_repository.dart';
 import '../../design_system/molecules/child_card.dart';
 import '../../design_system/organisms/gradient_header.dart';
-import '../../design_system/templates/role_scaffold.dart';
 import '../../design_system/tokens/app_colors.dart';
 
 class _ChildWithLatest {
@@ -56,37 +55,36 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
         final name = snapshot.data?.name ?? '…';
         final children = snapshot.data?.children ?? const <_ChildWithLatest>[];
 
-        return RoleScaffold(
-          role: Role.parent,
-          currentNavIndex: 0,
-          onNavTap: (i) => _navigate(context, i),
-          header: GradientHeader(
-            role: Role.parent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.favorite, color: AppColors.accentCoral, size: 19),
-                    const SizedBox(width: 7),
-                    Text(tr('parent.dashboard.role_label'), style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
-                    const Spacer(),
-                    HeaderIconButton(icon: Icons.notifications_outlined, showDot: true, onPressed: () {
-                      Navigator.of(context).pushNamed('/parent/notifications');
-                    }),
-                  ],
-                ),
-                const SizedBox(height: 18),
-                Text(tr('parent.dashboard.greeting', args: [name]),
-                    style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w700, letterSpacing: -0.4)),
-              ],
+        return Column(
+          children: [
+            GradientHeader(
+              role: Role.parent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.favorite, color: AppColors.accentCoral, size: 19),
+                      const SizedBox(width: 7),
+                      Text(tr('parent.dashboard.role_label'), style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
+                      const Spacer(),
+                      HeaderIconButton(icon: Icons.notifications_outlined, showDot: true, onPressed: () {
+                        Navigator.of(context).pushNamed('/parent/notifications');
+                      }),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  Text(tr('parent.dashboard.greeting', args: [name]),
+                      style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w700, letterSpacing: -0.4)),
+                ],
+              ),
             ),
-          ),
-          body: ListView(
+            Expanded(
+              child: ListView(
             padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
             children: [
               Text(tr('parent.dashboard.your_children'),
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
               const SizedBox(height: 11),
               if (!snapshot.hasData)
@@ -98,7 +96,7 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(tr('parent.dashboard.no_children'),
-                      style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                      style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                 )
               else
                 for (final c in children) ...[
@@ -147,7 +145,7 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
               ),
               const SizedBox(height: 20),
               Text(tr('parent.dashboard.quick_actions'),
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
               const SizedBox(height: 11),
               Row(
@@ -160,7 +158,9 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
                 ],
               ),
             ],
-          ),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -171,7 +171,7 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
       onPressed: () => Navigator.of(context).pushNamed(route),
       style: OutlinedButton.styleFrom(
         backgroundColor: AppColors.surface,
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: AppColors.border),
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
@@ -179,22 +179,9 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> {
         children: [
           Icon(icon, size: 24, color: color),
           const SizedBox(height: 9),
-          Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+          Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
         ],
       ),
     );
-  }
-
-  void _navigate(BuildContext context, int i) {
-    switch (i) {
-      case 1:
-        Navigator.of(context).pushNamed('/parent/charts');
-      case 2:
-        Navigator.of(context).pushNamed('/parent/tips');
-      case 3:
-        Navigator.of(context).pushNamed('/parent/notifications');
-      case 4:
-        Navigator.of(context).pushNamed('/parent/profile');
-    }
   }
 }

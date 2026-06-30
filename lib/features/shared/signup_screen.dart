@@ -78,13 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
         if (!mounted) return;
         await showDialog<void>(
           context: context,
-          builder: (_) => AlertDialog(
-            title: Text(tr('auth.signup.confirm_email_title')),
-            content: Text(e.message),
-            actions: [
-              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK')),
-            ],
-          ),
+          builder: (_) => _ConfirmEmailDialog(authRepository: _authRepository, email: email, message: e.message),
         );
         if (!mounted) return;
         Navigator.of(context).pop();
@@ -254,6 +248,66 @@ class _SignupScreenState extends State<SignupScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ConfirmEmailDialog extends StatefulWidget {
+  const _ConfirmEmailDialog({required this.authRepository, required this.email, required this.message});
+
+  final AuthRepository authRepository;
+  final String email;
+  final String message;
+
+  @override
+  State<_ConfirmEmailDialog> createState() => _ConfirmEmailDialogState();
+}
+
+class _ConfirmEmailDialogState extends State<_ConfirmEmailDialog> {
+  bool _resending = false;
+  String? _resendFeedback;
+
+  Future<void> _resend() async {
+    setState(() {
+      _resending = true;
+      _resendFeedback = null;
+    });
+    try {
+      await widget.authRepository.resendConfirmationEmail(widget.email);
+      if (!mounted) return;
+      setState(() => _resendFeedback = tr('auth.signup.resend_email_sent'));
+    } on AppAuthException catch (e) {
+      if (!mounted) return;
+      setState(() => _resendFeedback = e.message);
+    } finally {
+      if (mounted) setState(() => _resending = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(tr('auth.signup.confirm_email_title')),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(widget.message),
+          if (_resendFeedback != null) ...[
+            const SizedBox(height: 12),
+            Text(_resendFeedback!, style: const TextStyle(color: AppColors.parentPrimary, fontSize: 13)),
+          ],
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: _resending ? null : _resend,
+          child: _resending
+              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+              : Text(tr('auth.signup.resend_email')),
+        ),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK')),
+      ],
     );
   }
 }

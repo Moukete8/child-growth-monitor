@@ -5,17 +5,23 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
+  /// Flipped by [ThemeController] — turns the neutral tokens below into a
+  /// dark palette. Brand/role gradients and semantic risk colors stay
+  /// const/unchanged: they're saturated enough to read fine in both modes,
+  /// and retheming them was out of scope for this pass (see plan notes).
+  static bool isDark = false;
+
   // Page / surface
-  static const background = Color(0xFFEEF3F4);
-  static const surface = Color(0xFFFFFFFF);
-  static const border = Color(0xFFE2EAEC);
-  static const borderSubtle = Color(0xFFEEF3F4);
+  static Color get background => isDark ? const Color(0xFF0F1417) : const Color(0xFFEEF3F4);
+  static Color get surface => isDark ? const Color(0xFF1A2126) : const Color(0xFFFFFFFF);
+  static Color get border => isDark ? const Color(0xFF2A343A) : const Color(0xFFE2EAEC);
+  static Color get borderSubtle => isDark ? const Color(0xFF1F262B) : const Color(0xFFEEF3F4);
 
   // Text
-  static const textPrimary = Color(0xFF16242B);
-  static const textSecondary = Color(0xFF5E7480);
-  static const textMuted = Color(0xFF8CA0A8);
-  static const textFaint = Color(0xFFA7B6BC);
+  static Color get textPrimary => isDark ? const Color(0xFFEAF2F4) : const Color(0xFF16242B);
+  static Color get textSecondary => isDark ? const Color(0xFFA9B8BE) : const Color(0xFF5E7480);
+  static Color get textMuted => isDark ? const Color(0xFF7E939B) : const Color(0xFF8CA0A8);
+  static Color get textFaint => isDark ? const Color(0xFF607079) : const Color(0xFFA7B6BC);
   static const textOnDark70 = Color(0xB3FFFFFF);
 
   // Parent role (teal)

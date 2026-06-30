@@ -134,13 +134,13 @@ class _NurseChildProfileScreenState extends State<NurseChildProfileScreen> {
                                 ),
                                 const SizedBox(height: 14),
                                 Text(tr('nurse.child_profile.measurement_history'),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                                 const SizedBox(height: 9),
                                 if (history.isEmpty)
                                   Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 16),
-                                    child: Text(tr('nurse.child_profile.no_measurements'), style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                                    child: Text(tr('nurse.child_profile.no_measurements'), style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                                   )
                                 else
                                   Container(
@@ -218,17 +218,17 @@ class _NurseChildProfileScreenState extends State<NurseChildProfileScreen> {
   Widget _headerRow() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-      decoration: const BoxDecoration(
-        color: Color(0xFFF7FAFB),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7FAFB),
         border: Border(bottom: BorderSide(color: AppColors.borderSubtle)),
       ),
       child: Row(
         children: [
-          SizedBox(width: 58, child: Text(tr('nurse.child_profile.col_date'), style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.3))),
-          Expanded(child: Text(tr('nurse.child_profile.col_wt'), style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
-          Expanded(child: Text(tr('nurse.child_profile.col_ht'), style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
-          Expanded(child: Text(tr('nurse.child_profile.col_muac'), style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
-          SizedBox(width: 46, child: Text(tr('nurse.child_profile.col_status'), textAlign: TextAlign.right, style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
+          SizedBox(width: 58, child: Text(tr('nurse.child_profile.col_date'), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.3))),
+          Expanded(child: Text(tr('nurse.child_profile.col_wt'), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
+          Expanded(child: Text(tr('nurse.child_profile.col_ht'), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
+          Expanded(child: Text(tr('nurse.child_profile.col_muac'), style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
+          SizedBox(width: 46, child: Text(tr('nurse.child_profile.col_status'), textAlign: TextAlign.right, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.textMuted))),
         ],
       ),
     );
@@ -242,10 +242,10 @@ class _NurseChildProfileScreenState extends State<NurseChildProfileScreen> {
       ),
       child: Row(
         children: [
-          SizedBox(width: 58, child: Text(date, style: const TextStyle(fontSize: 12.5, color: AppColors.textMuted))),
-          Expanded(child: Text(wt, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
-          Expanded(child: Text(ht, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
-          Expanded(child: Text(muac, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
+          SizedBox(width: 58, child: Text(date, style: TextStyle(fontSize: 12.5, color: AppColors.textMuted))),
+          Expanded(child: Text(wt, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
+          Expanded(child: Text(ht, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
+          Expanded(child: Text(muac, style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary))),
           SizedBox(
             width: 46,
             child: Align(
@@ -278,7 +278,7 @@ class _MiniMetric extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+            Text(label, style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
             const SizedBox(height: 3),
             Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: color)),
           ],

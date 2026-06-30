@@ -186,18 +186,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        const Expanded(child: Divider(color: AppColors.border)),
+                        Expanded(child: Divider(color: AppColors.border)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
                             tr('auth.login.or'),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               color: AppColors.textFaint,
                             ),
                           ),
                         ),
-                        const Expanded(child: Divider(color: AppColors.border)),
+                        Expanded(child: Divider(color: AppColors.border)),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(
                       child: Text(
                         tr('auth.login.footer'),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textFaint,
                         ),

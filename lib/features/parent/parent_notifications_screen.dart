@@ -7,7 +7,7 @@ import '../../data/remote/supabase_client.dart';
 import '../../data/repositories/alert_repository.dart';
 import '../../data/repositories/child_repository.dart';
 import '../../design_system/molecules/list_tiles.dart';
-import '../../design_system/templates/role_scaffold.dart';
+import '../../design_system/organisms/gradient_header.dart';
 import '../../design_system/tokens/app_colors.dart';
 
 class _AlertWithChild {
@@ -78,40 +78,33 @@ class _ParentNotificationsScreenState extends State<ParentNotificationsScreen> {
       future: _future,
       builder: (context, snapshot) {
         final items = snapshot.data ?? const <_AlertWithChild>[];
-        return RoleScaffold(
-          role: Role.parent,
-          currentNavIndex: 3,
-          onNavTap: (i) => _navigate(context, i),
-          header: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
-              border: Border(bottom: BorderSide(color: AppColors.border)),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  tr('parent.notifications_screen.title'),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+        return Column(
+          children: [
+            GradientHeader(
+              role: Role.parent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    tr('parent.notifications_screen.title'),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  tr('parent.notifications_screen.total', args: ['${items.length}']),
-                  style: const TextStyle(
-                    fontSize: 12.5,
-                    color: AppColors.textMuted,
+                  const SizedBox(height: 3),
+                  Text(
+                    tr('parent.notifications_screen.total', args: ['${items.length}']),
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      color: Color(0xCCFFFFFF),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          body: !snapshot.hasData
+            Expanded(
+              child: !snapshot.hasData
               ? const Center(child: CircularProgressIndicator())
               : items.isEmpty
               ? Center(
@@ -120,7 +113,7 @@ class _ParentNotificationsScreenState extends State<ParentNotificationsScreen> {
                     child: Text(
                       tr('notifications.empty'),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.textFaint,
                         fontSize: 13,
                       ),
@@ -150,19 +143,10 @@ class _ParentNotificationsScreenState extends State<ParentNotificationsScreen> {
                     );
                   },
                 ),
+            ),
+          ],
         );
       },
     );
-  }
-
-  void _navigate(BuildContext context, int i) {
-    const routes = [
-      '/parent/dashboard',
-      '/parent/charts',
-      '/parent/tips',
-      '/parent/notifications',
-      '/parent/profile',
-    ];
-    if (i != 3) Navigator.of(context).pushReplacementNamed(routes[i]);
   }
 }

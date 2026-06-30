@@ -117,7 +117,7 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(tr('nurse.search.count', args: ['${results.length}']),
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                 ],
               ),
@@ -127,7 +127,7 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Center(
                     child: Text(tr('nurse.search.empty'),
-                        style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                        style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                   ),
                 ),
               for (final s in results) ...[
@@ -159,10 +159,10 @@ class _NurseSearchScreenState extends State<NurseSearchScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(s.child.name, style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                                Text(s.child.name, style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                                 const SizedBox(height: 2),
                                 Text(tr('nurse.search.code_age', args: [s.child.linkCode, formatAge(s.child.dateOfBirth)]),
-                                    style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                                    style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                               ],
                             ),
                           ),

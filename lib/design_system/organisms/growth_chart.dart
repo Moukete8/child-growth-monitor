@@ -48,7 +48,7 @@ class ZScoreBox extends StatelessWidget {
           children: [
             Text(label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+                style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
             const SizedBox(height: 4),
             Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: color)),
           ],
@@ -117,11 +117,11 @@ class _GrowthChartState extends State<GrowthChart> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(widget.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                     const SizedBox(height: 3),
                     Text(widget.unit,
-                        style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                        style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
                   ],
                 ),
               ),
@@ -156,12 +156,12 @@ class _GrowthChartState extends State<GrowthChart> {
           SizedBox(
             height: 196,
             child: points.length < 2
-                ? const Center(
+                ? Center(
                     child: Text('Not enough data yet', style: TextStyle(color: AppColors.textMuted)))
                 : LineChart(_chartData(points)),
           ),
           const SizedBox(height: 12),
-          const Divider(height: 1, color: AppColors.borderSubtle),
+          Divider(height: 1, color: AppColors.borderSubtle),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -183,7 +183,7 @@ class _GrowthChartState extends State<GrowthChart> {
       children: [
         Container(width: 9, height: 9, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
         const SizedBox(width: 6),
-        Text(label, style: const TextStyle(fontSize: 11.5, color: AppColors.textSecondary)),
+        Text(label, style: TextStyle(fontSize: 11.5, color: AppColors.textSecondary)),
       ],
     );
   }
@@ -216,7 +216,7 @@ class _GrowthChartState extends State<GrowthChart> {
             interval: widget.yTicks.length > 1 ? (widget.yTicks[1] - widget.yTicks[0]) : null,
             getTitlesWidget: (value, meta) => Text(
               value.toStringAsFixed(0),
-              style: const TextStyle(fontSize: 9, color: AppColors.textFaint),
+              style: TextStyle(fontSize: 9, color: AppColors.textFaint),
             ),
           ),
         ),
@@ -228,7 +228,7 @@ class _GrowthChartState extends State<GrowthChart> {
               final i = value.round();
               if (i < 0 || i >= points.length) return const SizedBox.shrink();
               return Text(points[i].label,
-                  style: const TextStyle(fontSize: 9, color: AppColors.textFaint));
+                  style: TextStyle(fontSize: 9, color: AppColors.textFaint));
             },
           ),
         ),

@@ -74,7 +74,7 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
               : items.isEmpty
                   ? Center(
                       child: Text(tr('nurse.alerts.empty'),
-                          textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                          textAlign: TextAlign.center, style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                     )
                   : ListView.separated(
                       padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
@@ -85,7 +85,7 @@ class _NurseAlertsScreenState extends State<NurseAlertsScreen> {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8),
                             child: Text(tr('nurse.alerts.footer_hint'),
-                                textAlign: TextAlign.center, style: const TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
+                                textAlign: TextAlign.center, style: TextStyle(fontSize: 11.5, color: AppColors.textFaint)),
                           );
                         }
                         final item = items[i];

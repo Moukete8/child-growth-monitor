@@ -101,10 +101,10 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                           children: [
                             Column(
                               children: [
-                                Text(tr('nurse.analysis.bmi'), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+                                Text(tr('nurse.analysis.bmi'), style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
                                 const SizedBox(height: 2),
                                 Text((latest.bmi ?? 0).toStringAsFixed(1),
-                                    style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.1)),
+                                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.textPrimary, height: 1.1)),
                               ],
                             ),
                             const SizedBox(width: 14),
@@ -114,7 +114,7 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(tr('nurse.analysis.who_classification'), style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+                                  Text(tr('nurse.analysis.who_classification'), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
                                   const SizedBox(height: 5),
                                   RiskBadge(level: level, label: label),
                                 ],

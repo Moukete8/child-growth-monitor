@@ -151,7 +151,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         const SizedBox(height: 8),
         Text(
           tr('auth.forgot_password.confirmation_body', args: [_emailController.text.trim()]),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13.5,
             color: AppColors.textSecondary,
             height: 1.5,

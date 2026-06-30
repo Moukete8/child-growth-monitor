@@ -92,7 +92,7 @@ class _NurseRegisterScreenState extends State<NurseRegisterScreen> {
               const SizedBox(height: 12),
               Text(
                 tr('nurse.register.dialog_share'),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12.5,
                   color: AppColors.textSecondary,
                 ),
@@ -175,7 +175,7 @@ class _NurseRegisterScreenState extends State<NurseRegisterScreen> {
                                     ? null
                                     : MemoryImage(snapshot.data!),
                                 child: snapshot.data == null
-                                    ? const Icon(
+                                    ? Icon(
                                         Icons.child_care,
                                         color: AppColors.textFaint,
                                         size: 32,
@@ -208,7 +208,7 @@ class _NurseRegisterScreenState extends State<NurseRegisterScreen> {
                   Center(
                     child: Text(
                       tr('nurse.register.photo_optional'),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textMuted,
                       ),
@@ -248,7 +248,7 @@ class _NurseRegisterScreenState extends State<NurseRegisterScreen> {
                   const SizedBox(height: 15),
                   Text(
                     tr('nurse.register.sex_label'),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textSecondary,

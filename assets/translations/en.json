@@ -102,6 +102,9 @@
     "profile": {
       "phone": "Phone",
       "email": "Email",
+      "change_password": "Change password",
+      "theme": "Theme",
+      "dark_mode": "Dark mode",
       "preferences": "PREFERENCES",
       "offline_data": "Offline data",
       "children_linked": "Parent · {} children linked",
@@ -223,6 +226,9 @@
     "settings": {
       "staff_id": "Staff ID · {}",
       "sync_status": "Sync status",
+      "change_password": "Change password",
+      "theme": "Theme",
+      "dark_mode": "Dark mode",
       "preferences": "PREFERENCES",
       "audit_trail": "Audit trail",
       "audit_trail_subtitle": "Every record signed"
@@ -264,7 +270,9 @@
       "error_validation": "Fill in your name, email and password.",
       "error_password_length": "Password must be at least 6 characters.",
       "error_password_match": "Passwords do not match.",
-      "confirm_email_title": "Confirm your email"
+      "confirm_email_title": "Confirm your email",
+      "resend_email": "Resend email",
+      "resend_email_sent": "Email resent. Check your spam folder too."
     },
     "complete_profile": {
       "title": "Finish setting up your account",
@@ -287,6 +295,20 @@
       "confirmation_title": "Check your email",
       "confirmation_body": "If an account exists for {}, a password reset link is on its way.",
       "back_to_login": "Back to login"
+    },
+    "change_password": {
+      "title": "Change password",
+      "subtitle": "Enter your old password, then your new one",
+      "old_password": "Old password",
+      "new_password": "New password",
+      "confirm_password": "Confirm new password",
+      "submit": "Update password",
+      "submitting": "Updating…",
+      "success": "Password updated.",
+      "error_validation": "Enter your old and new password.",
+      "error_password_length": "New password must be at least 6 characters.",
+      "error_password_match": "Passwords do not match.",
+      "error_old_password_wrong": "Incorrect current password."
     },
     "splash": {
       "title": "Child Growth\nMonitoring",

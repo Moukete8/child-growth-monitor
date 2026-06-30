@@ -6,8 +6,8 @@ import '../../data/local/app_database.dart';
 import '../../data/repositories/child_repository.dart';
 import '../../data/repositories/measurement_repository.dart';
 import '../../design_system/atoms/app_button.dart';
+import '../../design_system/organisms/gradient_header.dart';
 import '../../design_system/organisms/growth_chart.dart';
-import '../../design_system/templates/role_scaffold.dart';
 import '../../design_system/tokens/app_colors.dart';
 import '../../who_growth/z_score_engine.dart';
 
@@ -50,37 +50,33 @@ class _ParentGrowthChartsScreenState extends State<ParentGrowthChartsScreen> {
             ? null
             : children.firstWhere((c) => c.id == _selectedChildId, orElse: () => children.first);
 
-        return RoleScaffold(
-          role: Role.parent,
-          currentNavIndex: 1,
-          onNavTap: (i) => _navigate(context, i),
-          header: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
-              border: Border(bottom: BorderSide(color: AppColors.border)),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(tr('parent.charts.title'),
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
-                ),
-                if (selected != null)
-                  _ChildPicker(
-                    children: children,
-                    selected: selected,
-                    onChanged: (id) => setState(() => _selectedChildId = id),
+        return Column(
+          children: [
+            GradientHeader(
+              role: Role.parent,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(tr('parent.charts.title'),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
                   ),
-              ],
+                  if (selected != null)
+                    _ChildPicker(
+                      children: children,
+                      selected: selected,
+                      onChanged: (id) => setState(() => _selectedChildId = id),
+                    ),
+                ],
+              ),
             ),
-          ),
-          body: !snapshot.hasData
-              ? const Center(child: CircularProgressIndicator())
-              : selected == null
-                  ? _emptyState(context)
-                  : _ChartsBody(key: ValueKey(selected.id), child: selected),
+            Expanded(
+              child: !snapshot.hasData
+                  ? const Center(child: CircularProgressIndicator())
+                  : selected == null
+                      ? _emptyState(context)
+                      : _ChartsBody(key: ValueKey(selected.id), child: selected),
+            ),
+          ],
         );
       },
     );
@@ -93,7 +89,7 @@ class _ParentGrowthChartsScreenState extends State<ParentGrowthChartsScreen> {
         const SizedBox(height: 40),
         Center(
           child: Text(tr('parent.charts.no_children'),
-              textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
+              textAlign: TextAlign.center, style: TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
         ),
         const SizedBox(height: 16),
         AppButton(
@@ -102,11 +98,6 @@ class _ParentGrowthChartsScreenState extends State<ParentGrowthChartsScreen> {
         ),
       ],
     );
-  }
-
-  void _navigate(BuildContext context, int i) {
-    const routes = ['/parent/dashboard', '/parent/charts', '/parent/tips', '/parent/notifications', '/parent/profile'];
-    if (i != 1) Navigator.of(context).pushReplacementNamed(routes[i]);
   }
 }
 
@@ -131,8 +122,8 @@ class _ChildPicker extends StatelessWidget {
           const Icon(Icons.child_care, size: 16, color: AppColors.parentPrimary),
           const SizedBox(width: 6),
           Text(selected.name.split(' ').first,
-              style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
-          if (children.length > 1) const Icon(Icons.expand_more, size: 16, color: AppColors.textFaint),
+              style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+          if (children.length > 1) Icon(Icons.expand_more, size: 16, color: AppColors.textFaint),
         ],
       ),
     );
@@ -175,7 +166,7 @@ class _ChartsBodyState extends State<_ChartsBody> {
         if (history.isEmpty) {
           return Center(
             child: Text(tr('parent.charts.no_measurements', args: [widget.child.name]),
-                style: const TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
+                style: TextStyle(color: AppColors.textFaint, fontSize: 13.5)),
           );
         }
 
@@ -317,9 +308,9 @@ class _StatCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+            Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
             const SizedBox(height: 5),
-            Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+            Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
             const SizedBox(height: 3),
             Text(sub, style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w600, color: subColor)),
           ],

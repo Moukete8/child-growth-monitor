@@ -136,7 +136,7 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
                     ),
                     const SizedBox(height: 20),
                     Text(tr('nurse.dashboard.quick_actions'),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                     const SizedBox(height: 11),
                     GridView.count(
@@ -155,14 +155,14 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
                     ),
                     const SizedBox(height: 20),
                     Text(tr('nurse.dashboard.recent_activity'),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                     const SizedBox(height: 11),
                     if (data.activity.isEmpty)
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: Text(tr('nurse.dashboard.no_activity'),
-                            style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                            style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                       )
                     else
                       Container(
@@ -174,7 +174,7 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
                         child: Column(
                           children: [
                             for (var i = 0; i < data.activity.length; i++) ...[
-                              if (i > 0) const Divider(height: 1, color: AppColors.borderSubtle),
+                              if (i > 0) Divider(height: 1, color: AppColors.borderSubtle),
                               ActivityTile(
                                 icon: Icons.add_chart,
                                 iconBg: AppColors.infoBg,
@@ -199,7 +199,7 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
       onPressed: () => Navigator.of(context).pushNamed(route).then((_) => setState(() { _future = _load(); })),
       style: OutlinedButton.styleFrom(
         backgroundColor: AppColors.surface,
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: AppColors.border),
         padding: const EdgeInsets.all(15),
         alignment: Alignment.centerLeft,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -210,7 +210,7 @@ class _NurseDashboardScreenState extends State<NurseDashboardScreen> {
           const SizedBox(width: 11),
           Expanded(
             child: Text(label,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
           ),
         ],
       ),

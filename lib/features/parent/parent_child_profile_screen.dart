@@ -193,13 +193,13 @@ class _ParentChildProfileScreenState extends State<ParentChildProfileScreen> {
                                 ),
                                 const SizedBox(height: 16),
                                 Text(tr('parent.child_profile.measurement_timeline'),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textMuted, letterSpacing: 0.6)),
                                 const SizedBox(height: 11),
                                 if (history.isEmpty)
                                   Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 16),
-                                    child: Text(tr('parent.child_profile.no_measurements'), style: const TextStyle(color: AppColors.textFaint, fontSize: 13)),
+                                    child: Text(tr('parent.child_profile.no_measurements'), style: TextStyle(color: AppColors.textFaint, fontSize: 13)),
                                   )
                                 else
                                   Container(
@@ -261,7 +261,7 @@ class _MetricBox extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
+            Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textMuted)),
             const SizedBox(height: 4),
             Text(value, style: TextStyle(fontSize: 19, fontWeight: FontWeight.w700, color: color)),
           ],
@@ -299,9 +299,9 @@ class _TimelineRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+                Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
                 const SizedBox(height: 2),
-                Text(date, style: const TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                Text(date, style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
               ],
             ),
           ),

@@ -98,7 +98,7 @@ class _ParentLinkChildScreenState extends State<ParentLinkChildScreen> {
                 children: [
                   Text(
                     tr('parent.link_child.intro'),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13.5,
                       color: AppColors.textSecondary,
                       height: 1.55,
@@ -159,18 +159,18 @@ class _ParentLinkChildScreenState extends State<ParentLinkChildScreen> {
                   const SizedBox(height: 22),
                   Row(
                     children: [
-                      const Expanded(child: Divider(color: AppColors.border)),
+                      Expanded(child: Divider(color: AppColors.border)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           tr('parent.link_child.or_enter_code'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
                             color: AppColors.textFaint,
                           ),
                         ),
                       ),
-                      const Expanded(child: Divider(color: AppColors.border)),
+                      Expanded(child: Divider(color: AppColors.border)),
                     ],
                   ),
                   const SizedBox(height: 16),

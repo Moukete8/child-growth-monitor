@@ -119,7 +119,7 @@ class _NurseReportsScreenState extends State<NurseReportsScreen> {
                 child: Text(
                   tr('nurse.reports.empty'),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.textFaint, fontSize: 13),
+                  style: TextStyle(color: AppColors.textFaint, fontSize: 13),
                 ),
               ),
             );
