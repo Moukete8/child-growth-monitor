@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 16),
               AppTextField(
                 label: tr('auth.signup.email'),
-                placeholder: _role == Role.parent ? 'sarah@example.com' : 'nurse.joy@hgd.cm',
+                placeholder: _role == Role.parent ? 'sarah@example.com' : 'joy.ekane@gmail.com',
                 icon: Icons.mail_outline,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,

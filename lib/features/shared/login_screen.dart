@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: tr('auth.login.email'),
                       placeholder: _role == Role.parent
                           ? 'sarah@example.com'
-                          : 'nurse.joy@hgd.cm',
+                          : 'joy.ekane@gmail.com',
                       icon: Icons.mail_outline,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,

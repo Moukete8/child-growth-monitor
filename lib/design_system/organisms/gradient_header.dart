@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../tokens/app_colors.dart';
 
@@ -73,8 +74,11 @@ class AuthHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              const Text('Child Growth Monitoring',
-                  style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600)),
+              const Expanded(
+                child: Text('Child Growth Monitoring',
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600)),
+              ),
+              _LanguageToggle(),
             ],
           ),
           const SizedBox(height: 22),
@@ -84,6 +88,27 @@ class AuthHeader extends StatelessWidget {
           const SizedBox(height: 5),
           Text(subtitle, style: const TextStyle(color: Color(0xCCFFFFFF), fontSize: 13.5)),
         ],
+      ),
+    );
+  }
+}
+
+class _LanguageToggle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final isEn = context.locale.languageCode == 'en';
+    return GestureDetector(
+      onTap: () => context.setLocale(Locale(isEn ? 'fr' : 'en')),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          isEn ? 'FR' : 'EN',
+          style: const TextStyle(color: Colors.white, fontSize: 12.5, fontWeight: FontWeight.w700),
+        ),
       ),
     );
   }

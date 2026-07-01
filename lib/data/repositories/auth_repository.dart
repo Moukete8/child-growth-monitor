@@ -140,7 +140,10 @@ class AuthRepository {
   /// should not expect this future to resolve into a usable session.
   Future<bool> signInWithGoogle() async {
     try {
-      return await _client.auth.signInWithOAuth(OAuthProvider.google);
+      return await _client.auth.signInWithOAuth(
+        OAuthProvider.google,
+        redirectTo: 'com.salomon.childgrowth.child_growth_monitor://login-callback/',
+      );
     } on AuthException catch (e) {
       throw AppAuthException(e.message);
     }
