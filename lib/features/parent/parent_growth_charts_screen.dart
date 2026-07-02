@@ -194,6 +194,36 @@ class _ChartsBodyState extends State<_ChartsBody> {
               accent: AppColors.parentPrimary,
             ),
             const SizedBox(height: 14),
+            GrowthChart(
+              title: tr('parent.charts.height_for_age'),
+              unit: tr('parent.charts.z_score_unit'),
+              seriesByRange: {
+                '6M': _hazPointsUpTo(history, 6),
+                '1Y': _hazPointsUpTo(history, 12),
+                '2Y': _hazPointsUpTo(history, 24),
+              },
+              yMin: -4,
+              yMax: 4,
+              yTicks: const [-2, 0, 2],
+              bands: kWhoZScoreBands,
+              accent: AppColors.parentPrimary,
+            ),
+            const SizedBox(height: 14),
+            GrowthChart(
+              title: tr('parent.charts.weight_for_height'),
+              unit: tr('parent.charts.z_score_unit'),
+              seriesByRange: {
+                '6M': _whzPointsUpTo(history, 6),
+                '1Y': _whzPointsUpTo(history, 12),
+                '2Y': _whzPointsUpTo(history, 24),
+              },
+              yMin: -4,
+              yMax: 4,
+              yTicks: const [-2, 0, 2],
+              bands: kWhoZScoreBands,
+              accent: AppColors.parentPrimary,
+            ),
+            const SizedBox(height: 14),
             Row(
               children: [
                 ZScoreBox(label: tr('parent.charts.weight_height'), value: _fmt(latest.whz), color: _colorFor(latest.whz)),
@@ -239,6 +269,30 @@ class _ChartsBodyState extends State<_ChartsBody> {
               label: formatAge(widget.child.dateOfBirth, at: m.takenAt),
               value: m.waz ?? 0,
               status: riskLevelFor(WhoZScoreEngine.classify(m.waz ?? 0)),
+            ))
+        .toList();
+  }
+
+  List<GrowthPoint> _hazPointsUpTo(List<MeasurementRow> history, int maxMonths) {
+    final filtered =
+        history.where((m) => ageInMonths(widget.child.dateOfBirth, m.takenAt) <= maxMonths).toList();
+    return filtered.reversed
+        .map((m) => GrowthPoint(
+              label: formatAge(widget.child.dateOfBirth, at: m.takenAt),
+              value: m.haz ?? 0,
+              status: riskLevelFor(WhoZScoreEngine.classify(m.haz ?? 0)),
+            ))
+        .toList();
+  }
+
+  List<GrowthPoint> _whzPointsUpTo(List<MeasurementRow> history, int maxMonths) {
+    final filtered =
+        history.where((m) => ageInMonths(widget.child.dateOfBirth, m.takenAt) <= maxMonths).toList();
+    return filtered.reversed
+        .map((m) => GrowthPoint(
+              label: formatAge(widget.child.dateOfBirth, at: m.takenAt),
+              value: m.whz ?? 0,
+              status: riskLevelFor(WhoZScoreEngine.classify(m.whz ?? 0)),
             ))
         .toList();
   }

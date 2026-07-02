@@ -168,10 +168,9 @@ class ChildRepository {
   }
 
   Future<List<ChildRow>> childrenForCurrentNurse() async {
-    final nurseId = _client.auth.currentUser?.id;
-    if (nurseId == null) return [];
-    await _pullChildrenForNurse(nurseId);
-    return (_db.select(_db.children)..where((c) => c.registeredByNurseId.equals(nurseId))).get();
+    if (_client.auth.currentUser == null) return [];
+    await _pullAllChildrenForNurse();
+    return _db.select(_db.children).get();
   }
 
   Future<List<ChildRow>> childrenForCurrentParent() async {
@@ -196,9 +195,9 @@ class ChildRepository {
         upsert: (table, data) => _client.from(table).upsert(data),
       );
 
-  Future<void> _pullChildrenForNurse(String nurseId) async {
+  Future<void> _pullAllChildrenForNurse() async {
     try {
-      final rows = await _client.from('children').select().eq('registered_by_nurse_id', nurseId);
+      final rows = await _client.from('children').select();
       for (final r in rows) {
         await _db.into(_db.children).insertOnConflictUpdate(_rowFromMap(r).toCompanion(false));
       }

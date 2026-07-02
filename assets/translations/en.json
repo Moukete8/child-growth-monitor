@@ -43,6 +43,8 @@
       "link_a_child": "Link a child",
       "no_measurements": "No measurements yet for {}.",
       "weight_for_age": "Weight-for-Age",
+      "height_for_age": "Height-for-Age",
+      "weight_for_height": "Weight-for-Height",
       "z_score_unit": "Z-score · WHO standard",
       "weight_height": "Weight-Height",
       "height_age": "Height-Age",
@@ -178,6 +180,8 @@
       "height_age": "Height-Age",
       "weight_age": "Weight-Age",
       "weight_for_age": "Weight-for-Age",
+      "height_for_age": "Height-for-Age",
+      "weight_for_height": "Weight-for-Height",
       "z_score_unit": "Z-score · WHO standard",
       "severe_malnutrition": "Severe malnutrition",
       "moderate_malnutrition": "Moderate malnutrition",
@@ -309,6 +313,13 @@
       "error_password_length": "New password must be at least 6 characters.",
       "error_password_match": "Passwords do not match.",
       "error_old_password_wrong": "Incorrect current password."
+    },
+    "set_password": {
+      "title": "Set your password",
+      "subtitle": "Create a password to access the app with email too",
+      "submit": "Set password",
+      "success": "Password set successfully.",
+      "error_empty": "Please enter a password."
     },
     "splash": {
       "title": "Child Growth\nMonitoring",

@@ -86,6 +86,20 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                             status: riskLevelFor(WhoZScoreEngine.classify(m.waz ?? 0)),
                           ))
                       .toList();
+                  final hazSeries = history.reversed
+                      .map((m) => GrowthPoint(
+                            label: formatAge(child.dateOfBirth, at: m.takenAt),
+                            value: m.haz ?? 0,
+                            status: riskLevelFor(WhoZScoreEngine.classify(m.haz ?? 0)),
+                          ))
+                      .toList();
+                  final whzSeries = history.reversed
+                      .map((m) => GrowthPoint(
+                            label: formatAge(child.dateOfBirth, at: m.takenAt),
+                            value: m.whz ?? 0,
+                            status: riskLevelFor(WhoZScoreEngine.classify(m.whz ?? 0)),
+                          ))
+                      .toList();
 
                   return ListView(
                     padding: const EdgeInsets.all(16),
@@ -138,6 +152,30 @@ class _NurseGrowthAnalysisScreenState extends State<NurseGrowthAnalysisScreen> {
                         title: tr('nurse.analysis.weight_for_age'),
                         unit: tr('nurse.analysis.z_score_unit'),
                         seriesByRange: {'All': series},
+                        yMin: -4,
+                        yMax: 4,
+                        yTicks: const [-2, 0, 2],
+                        bands: kWhoZScoreBands,
+                        accent: AppColors.nursePrimary,
+                        initialRange: 'All',
+                      ),
+                      const SizedBox(height: 14),
+                      GrowthChart(
+                        title: tr('nurse.analysis.height_for_age'),
+                        unit: tr('nurse.analysis.z_score_unit'),
+                        seriesByRange: {'All': hazSeries},
+                        yMin: -4,
+                        yMax: 4,
+                        yTicks: const [-2, 0, 2],
+                        bands: kWhoZScoreBands,
+                        accent: AppColors.nursePrimary,
+                        initialRange: 'All',
+                      ),
+                      const SizedBox(height: 14),
+                      GrowthChart(
+                        title: tr('nurse.analysis.weight_for_height'),
+                        unit: tr('nurse.analysis.z_score_unit'),
+                        seriesByRange: {'All': whzSeries},
                         yMin: -4,
                         yMax: 4,
                         yTicks: const [-2, 0, 2],

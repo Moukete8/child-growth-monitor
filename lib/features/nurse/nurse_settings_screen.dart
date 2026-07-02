@@ -41,7 +41,7 @@ class _NurseSettingsScreenState extends State<NurseSettingsScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Could not update photo: $e')));
+      ).showSnackBar(SnackBar(content: Text(tr('shared.could_not_update_photo', args: ['$e']))));
     }
   }
 

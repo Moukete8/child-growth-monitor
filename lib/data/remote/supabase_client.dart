@@ -12,7 +12,13 @@ class AppSupabase {
         'Missing SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY — check .env (see .env.example).',
       );
     }
-    await Supabase.initialize(url: url, publishableKey: publishableKey);
+    await Supabase.initialize(
+      url: url,
+      publishableKey: publishableKey,
+      authOptions: const FlutterAuthClientOptions(
+        authFlowType: AuthFlowType.pkce,
+      ),
+    );
   }
 
   static SupabaseClient get client => Supabase.instance.client;

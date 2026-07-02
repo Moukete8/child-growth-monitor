@@ -19,6 +19,7 @@ import 'features/parent/parent_child_profile_screen.dart';
 import 'features/parent/parent_link_child_screen.dart';
 import 'features/parent/parent_shell.dart';
 import 'features/shared/change_password_screen.dart';
+import 'features/shared/set_password_screen.dart';
 import 'features/shared/complete_profile_screen.dart';
 import 'features/shared/forgot_password_screen.dart';
 import 'features/shared/login_screen.dart';
@@ -38,7 +39,6 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('fr')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      startLocale: const Locale('en'),
       child: const ChildGrowthApp(),
     ),
   );
@@ -57,14 +57,18 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    ThemeController.instance.load();
+    ThemeController.instance.load().then((_) { if (mounted) setState(() {}); });
+    ThemeController.instance.addListener(_onThemeChanged);
   }
 
   @override
   void dispose() {
+    ThemeController.instance.removeListener(_onThemeChanged);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+
+  void _onThemeChanged() => setState(() {});
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -75,20 +79,15 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: ThemeController.instance,
-      builder: (context, _) {
-        return MaterialApp(
-          title: 'Child Growth Monitoring',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light(Role.parent),
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          initialRoute: '/splash',
-          onGenerateRoute: _onGenerateRoute,
-        );
-      },
+    return MaterialApp(
+      title: 'Child Growth Monitoring',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light(Role.parent),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      initialRoute: '/splash',
+      onGenerateRoute: _onGenerateRoute,
     );
   }
 
@@ -109,6 +108,10 @@ class _ChildGrowthAppState extends State<ChildGrowthApp>
       case '/change-password':
         page = ChangePasswordScreen(
           email: settings.arguments as String? ?? '',
+        );
+      case '/set-password':
+        page = SetPasswordScreen(
+          role: (settings.arguments as Role?) ?? Role.parent,
         );
       case '/signup':
         page = SignupScreen(

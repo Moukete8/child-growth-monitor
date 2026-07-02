@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../data/remote/supabase_client.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../design_system/tokens/app_colors.dart';
 
@@ -30,6 +31,17 @@ class _SplashScreenState extends State<SplashScreen> {
     } else if (profile.needsProfileCompletion) {
       Navigator.of(context).pushReplacementNamed('/complete-profile');
     } else {
+      // Detect OAuth-only users (Google Sign-In without a password).
+      final user = AppSupabase.client.auth.currentUser;
+      final providers = (user?.appMetadata['providers'] as List?)?.cast<String>() ?? [];
+      final isOAuthOnly = providers.isNotEmpty && !providers.contains('email');
+      if (isOAuthOnly) {
+        Navigator.of(context).pushReplacementNamed(
+          '/set-password',
+          arguments: profile.isNurse ? Role.nurse : Role.parent,
+        );
+        return;
+      }
       Navigator.of(context)
           .pushReplacementNamed(profile.isNurse ? '/nurse/dashboard' : '/parent/dashboard');
     }

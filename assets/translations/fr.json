@@ -43,6 +43,8 @@
       "link_a_child": "Lier un enfant",
       "no_measurements": "Pas encore de mesure pour {}.",
       "weight_for_age": "Poids-pour-âge",
+      "height_for_age": "Taille-pour-âge",
+      "weight_for_height": "Poids-pour-taille",
       "z_score_unit": "Z-score · norme OMS",
       "weight_height": "Poids-Taille",
       "height_age": "Taille-Âge",
@@ -178,6 +180,8 @@
       "height_age": "Taille-Âge",
       "weight_age": "Poids-Âge",
       "weight_for_age": "Poids-pour-âge",
+      "height_for_age": "Taille-pour-âge",
+      "weight_for_height": "Poids-pour-taille",
       "z_score_unit": "Z-score · norme OMS",
       "severe_malnutrition": "Malnutrition sévère",
       "moderate_malnutrition": "Malnutrition modérée",
@@ -309,6 +313,13 @@
       "error_password_length": "Le nouveau mot de passe doit comporter au moins 6 caractères.",
       "error_password_match": "Les mots de passe ne correspondent pas.",
       "error_old_password_wrong": "Ancien mot de passe incorrect."
+    },
+    "set_password": {
+      "title": "Définir votre mot de passe",
+      "subtitle": "Créez un mot de passe pour accéder à l'app par email aussi",
+      "submit": "Définir le mot de passe",
+      "success": "Mot de passe défini avec succès.",
+      "error_empty": "Veuillez entrer un mot de passe."
     },
     "splash": {
       "title": "Suivi de croissance\nde l'enfant",
