@@ -33,6 +33,20 @@ class _NurseRegisterScreenState extends State<NurseRegisterScreen> {
     if (picked != null) setState(() => _avatar = picked);
   }
 
+  Future<void> _pickDob() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(now.year - 1, now.month, now.day),
+      firstDate: DateTime(now.year - 18),
+      lastDate: now,
+    );
+    if (picked != null) {
+      _dobController.text =
+          '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
+    }
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -230,7 +244,8 @@ class _NurseRegisterScreenState extends State<NurseRegisterScreen> {
                           placeholder: 'DD/MM/YYYY',
                           icon: Icons.calendar_today_outlined,
                           controller: _dobController,
-                          keyboardType: TextInputType.datetime,
+                          readOnly: true,
+                          onTap: _pickDob,
                         ),
                       ),
                       const SizedBox(width: 11),
